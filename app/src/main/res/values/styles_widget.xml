@@ -17,6 +17,11 @@
 
 <resources>
 
+    <style name="TextStyle.Content.Match">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
     <!--放一些组件的样式-->
     <style name="WindowAnimStyle" parent="@android:style/Animation">
         <item name="android:activityOpenEnterAnimation">@anim/xpage_slide_in_right</item>
@@ -94,4 +99,29 @@
         <item name="android:textColor">@color/xui_config_color_white</item>
     </style>
 
+    <!--TabLayout-->
+    <style name="TabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textColor">@color/selector_tab_text_color</item>
+        <item name="android:textSize">?attr/xui_config_size_content_text</item>
+    </style>
+
+    <style name="TabLayoutStyle" parent="Base.Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">?attr/colorAccent</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+        <item name="android:background">@color/xui_config_color_white</item>
+        <item name="tabBackground">?attr/selectableItemBackground</item>
+        <item name="tabTextAppearance">@style/TabText</item>
+        <item name="tabSelectedTextColor">?attr/colorAccent</item>
+        <item name="tabTextColor">@color/xui_config_color_gray_6</item>
+    </style>
+
+
+    <style name="XUILayout">
+        <item name="xui_borderWidth">0dp</item>
+        <item name="xui_radius">8dp</item>
+        <item name="xui_shadowElevation">4dp</item>
+        <item name="android:background">@color/xui_config_color_white</item>
+    </style>
 </resources>

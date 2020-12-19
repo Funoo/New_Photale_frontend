@@ -27,7 +27,7 @@
     <style name="AppTheme.Launch.App">
         <!--注意修改图标-->
         <item name="xui_config_splash_app_logo">@drawable/ic_photale</item>
-<!--        <item name="xui_config_splash_company_logo">@drawable/ic_splash_company_logo</item>-->
+        <item name="xui_config_splash_company_logo">@drawable/ic_text</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

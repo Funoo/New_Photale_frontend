@@ -21,8 +21,10 @@ import android.graphics.Color;
 import android.view.View;
 
 import com.xuexiang.Photale.R;
+import com.xuexiang.Photale.activity.HomePageActivity;
 import com.xuexiang.Photale.activity.MainActivity;
 import com.xuexiang.Photale.core.BaseFragment;
+import com.xuexiang.Photale.fragment.homePage.HomeFragment;
 import com.xuexiang.Photale.utils.RandomUtils;
 import com.xuexiang.Photale.utils.SettingUtils;
 import com.xuexiang.Photale.utils.TokenUtils;
@@ -153,11 +155,12 @@ public class LoginFragment extends BaseFragment {
      * 登录成功的处理
      */
     private void onLoginSuccess() {
-        String token = RandomUtils.getRandomNumbersAndLetters(16);
-        if (TokenUtils.handleLoginSuccess(token)) {
-            popToBack();
-            ActivityUtils.startActivity(MainActivity.class);
-        }
+//        String token = RandomUtils.getRandomNumbersAndLetters(16);
+//        if (TokenUtils.handleLoginSuccess(token)) {
+//            popToBack();
+//            ActivityUtils.startActivity(HomePageActivity.class);
+//        }
+        openPage(HomeFragment.class);
     }
 
     @Override
