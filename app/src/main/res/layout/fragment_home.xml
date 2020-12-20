@@ -29,7 +29,7 @@
         app:indicator_line_show="true"
         app:indicator_line_height="2dp"
         app:indicator_height="42dp"
-        app:indicator_textSize="14sp"
+        app:indicator_textSize="18sp"
         app:indicator_width="0dp" />
 
     <com.xuexiang.xui.widget.tabbar.EasyIndicator

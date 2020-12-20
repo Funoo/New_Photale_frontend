@@ -21,6 +21,7 @@ package com.xuexiang.Photale.fragment.homePage;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,11 +55,17 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected TitleBar initTitle() {
-        TitleBar titleBar = super.initTitle();
-        titleBar.addAction(new TitleBar.TextAction("fragment") {
+        TitleBar titleBar = super.initTitle().setImmersive(true);
+        titleBar.setBackgroundColor(Color.TRANSPARENT);
+        titleBar.setTitle("");
+        titleBar.setLeftImageResource(R.drawable.ic_photale_img);
+        titleBar.setLeftText("PhoTale");
+        titleBar.setLeftTextColor(R.color.colorPrimary);
+        titleBar.setLeftTextBold(true);
+        titleBar.addAction(new TitleBar.ImageAction(R.drawable.ic_mico) {
             @Override
             public void performAction(View view) {
-                startActivity(new Intent(getContext(), HomePageActivity.class));
+
             }
         });
         return titleBar;
@@ -100,9 +107,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     protected void initViews() {
         mEasyIndicator.setTabTitles(ContentPage.getPageNames());
-        System.out.println(ContentPage.getPageNames());
         mEasyIndicator.setViewPager(mViewPager, mPagerAdapter);
-        System.out.println(mViewPager + "   " + mPagerAdapter);
         mViewPager.setOffscreenPageLimit(ContentPage.size() - 1);
         mViewPager.setCurrentItem(2);
     }
