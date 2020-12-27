@@ -23,6 +23,7 @@ package com.xuexiang.Photale.fragment.homePage;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -33,8 +34,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.xuexiang.Photale.R;
 import com.xuexiang.Photale.activity.HomePageActivity;
+import com.xuexiang.Photale.adapter.FragmentCacheAdapter;
 import com.xuexiang.Photale.components.tabbar.tablayout.ContentPage;
 import com.xuexiang.Photale.core.BaseFragment;
+import com.xuexiang.Photale.fragment.mainPage.mainPagefragment;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.tabbar.EasyIndicator;
@@ -45,8 +48,10 @@ import java.util.Map;
 import butterknife.BindView;
 
 
-@Page(name = "主页")
+@Page(name = "主页总页面")
 public class HomeFragment extends BaseFragment {
+
+    public mainPagefragment mainPagefragment;
 
     @BindView(R.id.easy_indicator)
     EasyIndicator mEasyIndicator;
@@ -84,10 +89,17 @@ public class HomeFragment extends BaseFragment {
             return ContentPage.size();
         }
 
+
         @Override
         public Object instantiateItem(final ViewGroup container, int position) {
             ContentPage page = ContentPage.getPage(position);
-            View view = getPageView(page);
+            System.out.println("print ContentPage.getPage(position)");
+            System.out.println(position);
+            System.out.println(page.getPosition());
+            System.out.println(ContentPage.getPage(position));
+            LayoutInflater inflater = getLayoutInflater();
+            View view = inflater.inflate(page.getPosition(), null);
+//            View view = getPageView(page.getPosition());
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             container.addView(view, params);
             return view;
@@ -104,13 +116,6 @@ public class HomeFragment extends BaseFragment {
         return R.layout.fragment_home;
     }
 
-    @Override
-    protected void initViews() {
-        mEasyIndicator.setTabTitles(ContentPage.getPageNames());
-        mEasyIndicator.setViewPager(mViewPager, mPagerAdapter);
-        mViewPager.setOffscreenPageLimit(ContentPage.size() - 1);
-        mViewPager.setCurrentItem(2);
-    }
 
     private View getPageView(ContentPage page) {
         View view = mPageMap.get(page);
@@ -123,6 +128,14 @@ public class HomeFragment extends BaseFragment {
             mPageMap.put(page, view);
         }
         return view;
+    }
+
+    @Override
+    protected void initViews() {
+        mEasyIndicator.setTabTitles(ContentPage.getPageNames());
+        mEasyIndicator.setViewPager(mViewPager, mPagerAdapter);
+        mViewPager.setOffscreenPageLimit(ContentPage.size() - 1);
+        mViewPager.setCurrentItem(0);
     }
 
 }

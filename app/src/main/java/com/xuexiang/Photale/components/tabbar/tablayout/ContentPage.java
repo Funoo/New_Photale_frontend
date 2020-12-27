@@ -17,6 +17,8 @@
 
 package com.xuexiang.Photale.components.tabbar.tablayout;
 
+import com.xuexiang.Photale.R;
+
 /**
  * 页面枚举
  * @author xuexiang
@@ -24,9 +26,9 @@ package com.xuexiang.Photale.components.tabbar.tablayout;
  */
 public enum ContentPage {
 
-    主页(0),
-    拼图故事(1),
-    生活日志(2);
+    主页(R.layout.fragment_main_pagefragment),
+    拼图故事(R.layout.fragment_settings),
+    生活日志(R.layout.fragment_login);
 
     private final int position;
 

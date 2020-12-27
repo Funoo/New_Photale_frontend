@@ -22,6 +22,7 @@ import android.view.View;
 
 import com.xuexiang.Photale.R;
 import com.xuexiang.Photale.activity.HomePageActivity;
+import com.xuexiang.Photale.activity.LoginActivity;
 import com.xuexiang.Photale.activity.MainActivity;
 import com.xuexiang.Photale.core.BaseFragment;
 import com.xuexiang.Photale.fragment.homePage.HomeFragment;
@@ -63,6 +64,11 @@ public class LoginFragment extends BaseFragment {
 
     private CountDownButtonHelper mCountDownHelper;
 
+    public static LoginFragment newInstance() {
+        LoginFragment loginFragment = new LoginFragment();
+        loginFragment.initViews();
+        return loginFragment;
+    }
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_login;
@@ -158,7 +164,7 @@ public class LoginFragment extends BaseFragment {
 //        String token = RandomUtils.getRandomNumbersAndLetters(16);
 //        if (TokenUtils.handleLoginSuccess(token)) {
 //            popToBack();
-//            ActivityUtils.startActivity(HomePageActivity.class);
+//            ActivityUtils.startActivity(MainActivity.class);
 //        }
         openPage(HomeFragment.class);
     }
