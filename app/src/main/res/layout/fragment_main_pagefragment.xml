@@ -15,47 +15,84 @@
   ~ limitations under the License.
   ~
   -->
+<!--<ScrollView-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:scrollbars="vertical"-->
+<!--    android:fadingEdge="vertical">-->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="48dp"
-        android:gravity="center_vertical"
-        android:paddingStart="25dp"
-        android:text="图片轮播简单使用"
-        android:textColor="#383838"
-        android:textSize="16sp" />
-
-    <com.xuexiang.xui.widget.banner.widget.banner.SimpleImageBanner
-        android:id="@+id/sib_simple_usage1"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:bb_scale="0.5625" />
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="48dp"
-        android:gravity="center_vertical"
-        android:paddingStart="25dp"
-        android:text="图片轮播简单使用"
-        android:textColor="#383838"
-        android:textSize="16sp" />
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="48dp"
-        android:gravity="center_vertical"
-        android:paddingStart="25dp"
-        android:text="图片轮播简单使用"
-        android:textColor="#383838"
-        android:textSize="16sp" />
+        android:orientation="vertical">
 
 
+        <com.xuexiang.xui.widget.banner.widget.banner.SimpleImageBanner
+            android:id="@+id/sib_simple_usage"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            app:bb_scale="0.5625" />
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <com.xuexiang.xui.widget.button.shadowbutton.ShadowButton
+                android:layout_width="58dp"
+                android:layout_height="90dp"
+                android:layout_margin="23dp"
+                android:layout_weight="1"
+                app:sb_color_pressed="@color/colorPrimary"
+                android:background="@drawable/auto_text"
+                app:sb_radius="6dp" />
+            <com.xuexiang.xui.widget.button.shadowbutton.ShadowButton
+                android:layout_width="58dp"
+                android:layout_height="90dp"
+                android:layout_margin="23dp"
+                android:layout_weight="1"
+                app:sb_color_pressed="@color/colorPrimary"
+                android:background="@drawable/auto_adjust"
+                app:sb_radius="6dp" />
+            <com.xuexiang.xui.widget.button.shadowbutton.ShadowButton
+                android:layout_width="58dp"
+                android:layout_height="90dp"
+                android:layout_margin="23dp"
+                android:layout_weight="1"
+                app:sb_color_pressed="@color/colorPrimary"
+                android:background="@drawable/diary"
+                app:sb_radius="6dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:paddingStart="33dp"
+            android:text="发现灵感"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16dp" />
+
+        <com.xuexiang.xui.widget.imageview.RadiusImageView
+            android:id="@+id/radiusImageView"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:src="@drawable/bg"
+            android:layout_gravity="center_horizontal"
+            app:riv_border_color="@color/xui_config_color_gray_6"
+            app:riv_border_width="1px"
+            app:riv_corner_radius="15dp"
+            app:riv_selected_border_color="@color/xui_config_color_gray_4"
+            app:riv_selected_border_width="1px"
+            app:riv_selected_mask_color="@color/xui_config_color_gray_8" />
+
+    </LinearLayout>
+<!--</ScrollView>-->
+

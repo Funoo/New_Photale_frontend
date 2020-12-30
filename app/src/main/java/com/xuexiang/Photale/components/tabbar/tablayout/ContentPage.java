@@ -27,7 +27,7 @@ import com.xuexiang.Photale.R;
 public enum ContentPage {
 
     主页(R.layout.fragment_main_pagefragment),
-    拼图故事(R.layout.fragment_settings),
+    设置(R.layout.fragment_settings),
     生活日志(R.layout.fragment_login);
 
     private final int position;

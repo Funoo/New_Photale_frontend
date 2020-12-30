@@ -20,29 +20,47 @@ package com.xuexiang.Photale.fragment.homePage;
 
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
 import com.xuexiang.Photale.R;
 import com.xuexiang.Photale.activity.HomePageActivity;
 import com.xuexiang.Photale.adapter.FragmentCacheAdapter;
 import com.xuexiang.Photale.components.tabbar.tablayout.ContentPage;
 import com.xuexiang.Photale.core.BaseFragment;
+import com.xuexiang.Photale.fragment.LoginFragment;
+import com.xuexiang.Photale.fragment.SettingsFragment;
 import com.xuexiang.Photale.fragment.mainPage.mainPagefragment;
+import com.xuexiang.Photale.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
+import com.xuexiang.xui.utils.ResUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.tabbar.EasyIndicator;
+import com.xuexiang.xutil.app.ActivityUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -51,65 +69,50 @@ import butterknife.BindView;
 @Page(name = "主页总页面")
 public class HomeFragment extends BaseFragment {
 
-    public mainPagefragment mainPagefragment;
+    ContentPagerAdapter mContentPagerAdapter;
+    private String[] topTitles ;
 
-    @BindView(R.id.easy_indicator)
-    EasyIndicator mEasyIndicator;
-    @BindView(R.id.view_pager)
+
+    @BindView(R.id.view_pager_home)
     ViewPager mViewPager;
+    @BindView(R.id.bottom_navigation)
+    BottomNavigationView bottomNavigation;
 
+
+    @Nullable
     @Override
-    protected TitleBar initTitle() {
-        TitleBar titleBar = super.initTitle().setImmersive(true);
-        titleBar.setBackgroundColor(Color.TRANSPARENT);
-        titleBar.setTitle("");
-        titleBar.setLeftImageResource(R.drawable.ic_photale_img);
-        titleBar.setLeftText("PhoTale");
-        titleBar.setLeftTextColor(R.color.colorPrimary);
-        titleBar.setLeftTextBold(true);
-        titleBar.addAction(new TitleBar.ImageAction(R.drawable.ic_mico) {
-            @Override
-            public void performAction(View view) {
-
-            }
-        });
-        return titleBar;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        topTitles = ResUtils.getStringArray(R.array.home_titles);
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
-    private Map<ContentPage, View> mPageMap = new HashMap<>();
-
-    private PagerAdapter mPagerAdapter = new PagerAdapter() {
-        @Override
-        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-            return view == object;
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mContentPagerAdapter = new ContentPagerAdapter(getChildFragmentManager());
+        mContentPagerAdapter.addFragment(mainPagefragment.newInstance());
+        mContentPagerAdapter.addFragment(LoginFragment.newInstance());
+        mContentPagerAdapter.addFragment(SettingsFragment.newInstance());
+        mViewPager = view.findViewById(R.id.view_pager_home);
+        mViewPager.setAdapter(mContentPagerAdapter);
+        TabLayout tabLayout = view.findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(mViewPager);
+        for(int i=0;i<topTitles.length;i++){
+            tabLayout.getTabAt(i).setText(topTitles[i]);
         }
+        TitleBar mTitleBar2 = view.findViewById(R.id.titlebar2);
+        mTitleBar2.setLeftClickListener(v -> XToastUtils.toast("点击主图标"))
+                .addAction(new TitleBar.ImageAction(R.drawable.ic_mico) {
+                    @Override
+                    public void performAction(View view) {
+                        XToastUtils.toast("点击语音输入");
+                    }});
+    }
 
-        @Override
-        public int getCount() {
-            return ContentPage.size();
-        }
 
 
-        @Override
-        public Object instantiateItem(final ViewGroup container, int position) {
-            ContentPage page = ContentPage.getPage(position);
-            System.out.println("print ContentPage.getPage(position)");
-            System.out.println(position);
-            System.out.println(page.getPosition());
-            System.out.println(ContentPage.getPage(position));
-            LayoutInflater inflater = getLayoutInflater();
-            View view = inflater.inflate(page.getPosition(), null);
-//            View view = getPageView(page.getPosition());
-            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            container.addView(view, params);
-            return view;
-        }
+    //    private Map<ContentPage, View> mPageMap = new HashMap<>();
 
-        @Override
-        public void destroyItem(ViewGroup container, int position, @NonNull Object object) {
-            container.removeView((View) object);
-        }
-    };
+
 
     @Override
     protected int getLayoutId() {
@@ -117,25 +120,58 @@ public class HomeFragment extends BaseFragment {
     }
 
 
-    private View getPageView(ContentPage page) {
-        View view = mPageMap.get(page);
-        if (view == null) {
-            TextView textView = new TextView(getContext());
-            textView.setTextAppearance(getContext(), R.style.TextStyle_Content_Match);
-            textView.setGravity(Gravity.CENTER);
-            textView.setText(String.format("这个是%s页面的内容", page.name()));
-            view = textView;
-            mPageMap.put(page, view);
-        }
-        return view;
-    }
 
     @Override
     protected void initViews() {
-        mEasyIndicator.setTabTitles(ContentPage.getPageNames());
-        mEasyIndicator.setViewPager(mViewPager, mPagerAdapter);
-        mViewPager.setOffscreenPageLimit(ContentPage.size() - 1);
-        mViewPager.setCurrentItem(0);
+        System.out.println("进入了initViews()");
+    }
+
+    public class ContentPagerAdapter extends FragmentPagerAdapter {
+
+        private List<BaseFragment> fragmentList;
+
+        public ContentPagerAdapter(FragmentManager fm) {
+            super(fm);
+            fragmentList = new ArrayList<>();
+        }
+
+        public void addFragment(BaseFragment fragment) {
+            fragmentList.add(fragment);
+        }
+
+        @Override
+        public BaseFragment getItem(int i) {
+            return fragmentList.get(i);
+        }
+
+        @Override
+        public int getCount() {
+            return fragmentList.size();
+        }
+
+
+
+        @Override
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+
+        }
+    }
+
+    public static class DemoObjectFragment extends Fragment {
+        public static final String ARG_OBJECT = "object";
+
+        @Override
+        public View onCreateView(LayoutInflater inflater,
+                                 ViewGroup container, Bundle savedInstanceState) {
+            return inflater.inflate(R.layout.fragment_settings, container, false);
+        }
+
+        @SuppressLint("SetTextI18n")
+        @Override
+        public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+            Bundle args = getArguments();
+            System.out.println("ARGS IS " + args);
+        }
     }
 
 }

@@ -17,6 +17,8 @@
 
 package com.xuexiang.Photale.fragment.mainPage;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -27,8 +29,12 @@ import android.view.ViewGroup;
 
 import com.xuexiang.Photale.R;
 import com.xuexiang.Photale.core.BaseFragment;
+import com.xuexiang.Photale.fragment.homePage.HomeFragment;
 import com.xuexiang.Photale.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
+import com.xuexiang.xui.utils.ResUtils;
+import com.xuexiang.xui.utils.ThemeUtils;
+import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.banner.widget.banner.BannerItem;
 import com.xuexiang.xui.widget.banner.widget.banner.SimpleImageBanner;
 import com.xuexiang.xui.widget.banner.widget.banner.base.BaseBanner;
@@ -43,16 +49,32 @@ public class mainPagefragment extends BaseFragment implements BaseBanner.OnItemC
 
     private List<BannerItem> mData;
 
-    @BindView(R.id.sib_simple_usage1)
-    SimpleImageBanner sib_simple_usage1;
+    @BindView(R.id.sib_simple_usage)
+    SimpleImageBanner sib_simple_usage;
 
+
+
+    public static mainPagefragment newInstance() {
+        mainPagefragment firstPageFragment = new mainPagefragment();
+        return firstPageFragment;
+    }
+
+    @Override
+    protected TitleBar initTitle() {
+        TitleBar titleBar = super.initTitle()
+                .setImmersive(true);
+        titleBar.disableLeftView();
+        titleBar.setHeight(0);
+        titleBar.setBackgroundColor(Color.TRANSPARENT);
+        titleBar.setTitle("");
+        return titleBar;
+    }
 
     /**
      * 图片轮播
      */
     private void sib_simple_usage() {
-        System.out.println("sib_simple_usage()");
-        sib_simple_usage1.setSource(mData)
+        sib_simple_usage.setSource(mData)
                 .setOnItemClickListener((view, t, position) -> {
                 })
                 .setIsOnePageLoop(false).startScroll();
@@ -62,19 +84,19 @@ public class mainPagefragment extends BaseFragment implements BaseBanner.OnItemC
     }
 
     public static String[] titles = new String[]{
-            "伪装者:胡歌演绎'痞子特工'",
-            "无心法师:生死离别!月牙遭虐杀",
-            "花千骨:尊上沦为花千骨",
-            "综艺饭:胖轩偷看夏天洗澡掀波澜",
-            "碟中谍4:阿汤哥高塔命悬一线,超越不可能",
+            "风景",
+            "风景",
+            "风景",
+            "风景",
+            "风景",
     };
 
     public static String[] urls = new String[]{//640*360 360/640=0.5625
-            "app/src/main/res/drawable-hdpi/bg.png",//伪装者:胡歌演绎"痞子特工"
-            "http://photocdn.sohu.com/tvmobilemvms/20150907/144158380433341332.jpg",//无心法师:生死离别!月牙遭虐杀
-            "D:\\AndroidProject\\New_Photale_frontend\\app\\src\\main\\res\\drawable-hdpi\\bg.png",//花千骨:尊上沦为花千骨
-            "http://photocdn.sohu.com/tvmobilemvms/20150902/144115156939164801.jpg",//综艺饭:胖轩偷看夏天洗澡掀波澜
-            "http://photocdn.sohu.com/tvmobilemvms/20150907/144159406950245847.jpg",//碟中谍4:阿汤哥高塔命悬一线,超越不可能
+            "http://pic.5tu.cn/uploads/allimg/1905/pic_5tu_big_2019050601001168045.jpg",
+            "http://pic1.win4000.com/wallpaper/2020-04-13/5e93d67c42c62.jpg",
+            "http://pic1.win4000.com/wallpaper/2020-04-13/5e93d67d16c6d.jpg",
+            "http://pic1.win4000.com/wallpaper/2020-04-13/5e93d67dcee9f.jpg",
+            "http://pic1.win4000.com/wallpaper/2020-04-13/5e93d67ebdab1.jpg",
     };
 
     public static List<BannerItem> getBannerList() {
@@ -109,7 +131,7 @@ public class mainPagefragment extends BaseFragment implements BaseBanner.OnItemC
 
     @Override
     public void onDestroyView() {
-        sib_simple_usage1.recycle();
+        sib_simple_usage.recycle();
         super.onDestroyView();
     }
 

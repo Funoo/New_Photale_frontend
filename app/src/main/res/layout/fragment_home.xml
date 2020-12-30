@@ -21,31 +21,46 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.xuexiang.xui.widget.tabbar.EasyIndicator
-        android:id="@+id/easy_indicator1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        app:indicator_line_show="true"
-        app:indicator_line_height="2dp"
-        app:indicator_height="42dp"
-        app:indicator_textSize="18sp"
-        app:indicator_width="0dp" />
 
-    <com.xuexiang.xui.widget.tabbar.EasyIndicator
-        android:id="@+id/easy_indicator"
+
+    <com.xuexiang.xui.widget.actionbar.TitleBar
+        android:id="@+id/titlebar2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:indicator_line_show="true"
-        app:indicator_line_height="3dp"
-        app:indicator_height="42dp"
-        app:indicator_textSize="14sp"
-        app:indicator_width="0dp" />
+        android:layout_marginTop="13dp"
+        app:tb_actionPadding="30dp"
+        app:tb_centerGravity="left"
+        app:tb_leftText="&#8201;PhoTale"
+        app:tb_leftImageResource="@drawable/ic_photale_img"
+        app:tb_actionTextColor="@color/colorPrimary"
+        app:tb_sideTextColor="@color/colorPrimary"
+        app:tb_sideTextPadding="20dp"
+        app:tb_sideTextSize="18sp"
+        app:tb_useThemeColor="false"
+        android:background="@color/xui_config_color_transparent"/>
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
+        android:id="@+id/view_pager_home"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="?actionBarSize"
+        android:overScrollMode="never">
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabTextAppearance="@style/TabLayoutTextStyle"
+            app:tabSelectedTextColor="@color/colorPrimary"/>
+    </androidx.viewpager.widget.ViewPager>
+
+    <!--  底部导航栏  -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_gravity="bottom"
+        android:background="@color/xui_config_color_white"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/menu_navigation_bottom" />
 
 </LinearLayout>

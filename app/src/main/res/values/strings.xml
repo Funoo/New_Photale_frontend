@@ -8,6 +8,10 @@
     <string name="menu_news">动态</string>
     <string name="menu_trending">趋势</string>
     <string name="menu_profile">我的</string>
+    
+    <string name="main_page">主页</string>
+    <string name="pingtu_story">拼图故事</string>
+    <string name="dairy">生活日志</string>
 
     <string name="menu_notifications">通知</string>
     <string name="menu_issues">问题</string>

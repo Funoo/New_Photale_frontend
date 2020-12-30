@@ -49,6 +49,11 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
     @BindView(R.id.menu_logout)
     SuperTextView menuLogout;
 
+    public static SettingsFragment newInstance() {
+        SettingsFragment settingsFragment = new SettingsFragment();
+        return settingsFragment;
+    }
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_settings;
