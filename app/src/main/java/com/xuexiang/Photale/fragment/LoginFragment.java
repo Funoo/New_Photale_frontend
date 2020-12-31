@@ -166,6 +166,7 @@ public class LoginFragment extends BaseFragment {
 //            popToBack();
 //            ActivityUtils.startActivity(MainActivity.class);
 //        }
+//        ActivityUtils.startActivity(HomePageActivity.class);
         openPage(HomeFragment.class);
     }
 

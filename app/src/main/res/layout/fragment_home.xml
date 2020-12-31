@@ -39,11 +39,13 @@
         app:tb_useThemeColor="false"
         android:background="@color/xui_config_color_transparent"/>
 
+<!--    <androidx.core.widget.NestedScrollView style="@style/ScrollViewStyle"></androidx.core.widget.NestedScrollView>-->
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager_home"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="?actionBarSize"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:overScrollMode="never">
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
@@ -53,12 +55,13 @@
             app:tabSelectedTextColor="@color/colorPrimary"/>
     </androidx.viewpager.widget.ViewPager>
 
+
     <!--  底部导航栏  -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:layout_gravity="bottom"
+        android:layout_gravity="center_horizontal|center"
         android:background="@color/xui_config_color_white"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/menu_navigation_bottom" />

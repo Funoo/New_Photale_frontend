@@ -54,39 +54,32 @@ import butterknife.BindView;
 public class HomePageActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, BottomNavigationView.OnNavigationItemSelectedListener, ClickUtils.OnClick2ExitListener{
 
 
-
-    @BindView(R.id.view_pager)
-    ViewPager mViewPager;
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigation;
-
-
 
     private String[] mTitles;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        openPage(HomeFragment.class);
+
         System.out.println("---------------------------step in HomepageActivity onCreate------------------");
         mTitles = ResUtils.getStringArray(R.array.home_titles);
-        mViewPager = findViewById(R.id.view_pager);
-        bottomNavigation = findViewById(R.id.bottom_navigation);
+//        mViewPager  = findViewById(R.id.view_pager);
+        openPage(HomeFragment.class);
 
 
-
-        mViewPager.setOffscreenPageLimit(ContentPage.size() - 1);
+//        mViewPager.setOffscreenPageLimit(ContentPage.size() - 1);
 
         initListeners();
+        super.onCreate(savedInstanceState);
     }
 
 
     protected void initListeners() {
 
         //主页事件监听
-        mViewPager.addOnPageChangeListener(this);
-        bottomNavigation.setOnNavigationItemSelectedListener(this);
+//        mViewPager.addOnPageChangeListener(this);
     }
 
     /**
@@ -99,7 +92,7 @@ public class HomePageActivity extends BaseActivity implements View.OnClickListen
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int index = CollectionUtils.arrayIndexOf(mTitles, menuItem.getTitle());
         if (index != -1) {
-            mViewPager.setCurrentItem(index, false);
+//            mViewPager.setCurrentItem(index, false);
 
             return true;
         }
