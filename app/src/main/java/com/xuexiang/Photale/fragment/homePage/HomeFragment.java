@@ -48,6 +48,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.xuexiang.Photale.R;
 import com.xuexiang.Photale.activity.HomePageActivity;
 import com.xuexiang.Photale.activity.MainActivity;
+import com.xuexiang.Photale.activity.RecordMainActivity;
 import com.xuexiang.Photale.adapter.FragmentCacheAdapter;
 import com.xuexiang.Photale.adapter.entity.NewInfo;
 import com.xuexiang.Photale.components.tabbar.tablayout.ContentPage;
@@ -155,7 +156,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         if (item.getItemId() == R.id.my_plog){
             openPage(SettingsFragment.class);
         }else if (item.getItemId() == R.id.upload){
-            openPage(SettingsFragment.class);
+//            openPage(SettingsFragment.class);
+            ActivityUtils.startActivity(RecordMainActivity.class);
         }else if (item.getItemId() == R.id.me){
             openPage(SettingsFragment.class);
         }

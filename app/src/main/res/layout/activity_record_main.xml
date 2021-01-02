@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/record_title_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <fragment
+        android:id="@+id/record_title_fragment"
+        android:name="com.xuexiang.Photale.fragment.record.RecordTitleFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+            android:id="@+id/take_photo_btn"
+            style="@style/RoundButton.Auto"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:text="TAKE PHOTO"
+            android:textColor="@color/xui_default_round_btn_white_text"
+            app:rb_backgroundColor="@color/colorPrimary"
+            app:rb_borderColor="@color/xui_config_color_control_normal"
+            android:layout_gravity="start|bottom"/>
+
+        <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+            android:id="@+id/choose_photo_btn"
+            style="@style/RoundButton.Auto"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:text="CHOOSE PHOTO"
+            android:textColor="@color/xui_default_round_btn_white_text"
+            app:rb_backgroundColor="@color/colorPrimary"
+            app:rb_borderColor="@color/xui_config_color_control_normal"
+            android:layout_gravity="end|bottom"/>
+    </LinearLayout>
+
+
+</FrameLayout>

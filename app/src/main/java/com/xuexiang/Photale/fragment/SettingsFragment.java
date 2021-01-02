@@ -17,12 +17,16 @@
 
 package com.xuexiang.Photale.fragment;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
+
 import com.xuexiang.Photale.R;
 import com.xuexiang.Photale.core.BaseFragment;
 import com.xuexiang.Photale.utils.TokenUtils;
 import com.xuexiang.Photale.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xpage.annotation.Page;
+import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.dialog.DialogLoader;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 import com.xuexiang.xutil.XUtil;
@@ -52,6 +56,15 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
     public static SettingsFragment newInstance() {
         SettingsFragment settingsFragment = new SettingsFragment();
         return settingsFragment;
+    }
+
+    @Override
+    protected TitleBar initTitle() {
+        TitleBar titleBar = super.initTitle()
+                .setImmersive(true);
+        titleBar.setBackgroundResource(R.color.colorAccent);
+        titleBar.setTitle("我的");
+        return titleBar;
     }
 
     @Override
