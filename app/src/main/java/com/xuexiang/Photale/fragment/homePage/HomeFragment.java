@@ -57,6 +57,7 @@ import com.xuexiang.Photale.fragment.AboutFragment;
 import com.xuexiang.Photale.fragment.LoginFragment;
 import com.xuexiang.Photale.fragment.SettingsFragment;
 import com.xuexiang.Photale.fragment.mainPage.mainPagefragment;
+import com.xuexiang.Photale.fragment.timeline.TimeLineFragment;
 import com.xuexiang.Photale.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xpage.annotation.Page;
@@ -99,7 +100,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mContentPagerAdapter = new ContentPagerAdapter(getChildFragmentManager());
         mContentPagerAdapter.addFragment(mainPagefragment.newInstance());
-        mContentPagerAdapter.addFragment(LoginFragment.newInstance());
+        mContentPagerAdapter.addFragment(TimeLineFragment.newInstance());
         mContentPagerAdapter.addFragment(SettingsFragment.newInstance());
         mViewPager = view.findViewById(R.id.view_pager_home);
         mViewPager.setAdapter(mContentPagerAdapter);
