@@ -44,7 +44,7 @@
                 <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
                     android:id="@+id/menu_push"
                     style="@style/InfoItem.Account"
-                    app:sLeftTextString="推送" />
+                    app:sLeftTextString="设置" />
 
                 <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
                     android:id="@+id/menu_helper"

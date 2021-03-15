@@ -54,6 +54,7 @@ import com.xuexiang.Photale.adapter.entity.NewInfo;
 import com.xuexiang.Photale.components.tabbar.tablayout.ContentPage;
 import com.xuexiang.Photale.core.BaseFragment;
 import com.xuexiang.Photale.fragment.AboutFragment;
+import com.xuexiang.Photale.fragment.Dairy.DairyFragment;
 import com.xuexiang.Photale.fragment.LoginFragment;
 import com.xuexiang.Photale.fragment.SettingsFragment;
 import com.xuexiang.Photale.fragment.mainPage.mainPagefragment;
@@ -101,7 +102,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         mContentPagerAdapter = new ContentPagerAdapter(getChildFragmentManager());
         mContentPagerAdapter.addFragment(mainPagefragment.newInstance());
         mContentPagerAdapter.addFragment(TimeLineFragment.newInstance());
-        mContentPagerAdapter.addFragment(SettingsFragment.newInstance());
+        mContentPagerAdapter.addFragment(DairyFragment.newInstance());
         mViewPager = view.findViewById(R.id.view_pager_home);
         mViewPager.setAdapter(mContentPagerAdapter);
         BottomNavigationView bottomNavigation = view.findViewById(R.id.bottom_navigation);

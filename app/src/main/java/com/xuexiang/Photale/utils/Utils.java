@@ -17,28 +17,49 @@
 
 package com.xuexiang.Photale.utils;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.LruCache;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.luck.picture.lib.PictureSelectionModel;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
 import com.xuexiang.Photale.R;
 import com.xuexiang.Photale.core.webview.AgentWebActivity;
+import com.xuexiang.xui.utils.DrawableUtils;
 import com.xuexiang.xui.utils.ResUtils;
 import com.xuexiang.xui.widget.dialog.DialogLoader;
 import com.xuexiang.xui.widget.dialog.materialdialog.DialogAction;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 import com.xuexiang.xutil.XUtil;
+import com.xuexiang.xutil.data.DateUtils;
+import com.xuexiang.xutil.file.FileIOUtils;
+import com.xuexiang.xutil.file.FileUtils;
+
+import java.io.File;
 
 import static com.xuexiang.Photale.core.webview.AgentWebFragment.KEY_URL;
 
@@ -96,6 +117,7 @@ public final class Utils {
                                         showPrivacyDialog(context, submitListener);
                                     }
                                 }, ResUtils.getString(R.string.lab_exit_app), new DialogInterface.OnClickListener() {
+                                    @SuppressLint("MissingPermission")
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
@@ -171,6 +193,131 @@ public final class Utils {
                         / 255;
         return darkness >= 0.382;
     }
+
+    //==========图片选择===========//
+
+    /**
+     * 获取图片选择的配置
+     *
+     * @param fragment
+     * @return
+     */
+    public static PictureSelectionModel getPictureSelector(Fragment fragment) {
+        return PictureSelector.create(fragment)
+                .openGallery(PictureMimeType.ofImage())
+                .theme(SettingSPUtils.getInstance().isUseCustomTheme() ? R.style.XUIPictureStyle_Custom : R.style.XUIPictureStyle)
+                .maxSelectNum(8)
+                .minSelectNum(1)
+                .selectionMode(PictureConfig.MULTIPLE)
+                .previewImage(true)
+                .isCamera(false)
+                .enableCrop(false)
+                .compress(true)
+                .previewEggs(true);
+    }
+
+    public static PictureSelectionModel getPictureSelector(Activity activity) {
+        return PictureSelector.create(activity)
+                .openGallery(PictureMimeType.ofImage())
+                .theme(SettingSPUtils.getInstance().isUseCustomTheme() ? R.style.XUIPictureStyle_Custom : R.style.XUIPictureStyle)
+                .maxSelectNum(8)
+                .minSelectNum(1)
+                .selectionMode(PictureConfig.MULTIPLE)
+                .previewImage(true)
+                .isCamera(false)
+                .enableCrop(false)
+                .compress(true)
+                .previewEggs(true);
+    }
+
+    //==========拍照===========//
+
+    public static final String JPEG = ".jpeg";
+
+    /**
+     * 处理拍照的回调
+     *
+     * @param data
+     * @return
+     */
+    public static String handleOnPictureTaken(byte[] data) {
+        return handleOnPictureTaken(data, JPEG);
+    }
+
+    /**
+     * 处理拍照的回调
+     *
+     * @param data
+     * @return
+     */
+    public static String handleOnPictureTaken(byte[] data, String fileSuffix) {
+        String picPath = FileUtils.getDiskCacheDir() + "/images/" + DateUtils.getNowMills() + fileSuffix;
+        boolean result = FileIOUtils.writeFileFromBytesByStream(picPath, data);
+        return result ? picPath : "";
+    }
+
+    public static String getImageSavePath() {
+        return FileUtils.getDiskCacheDir("images") + File.separator + DateUtils.getNowMills() + JPEG;
+    }
+
+
+    /**
+     * 截图RecyclerView
+     *
+     * @param recyclerView
+     * @return
+     */
+    public static Bitmap getRecyclerViewScreenSpot(RecyclerView recyclerView) {
+        RecyclerView.Adapter adapter = recyclerView.getAdapter();
+        Bitmap bigBitmap = null;
+        if (adapter != null) {
+            int size = adapter.getItemCount();
+            int height = 0;
+            Paint paint = new Paint();
+            int iHeight = 0;
+            final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+            final int cacheSize = maxMemory / 8;
+            LruCache<String, Bitmap> bitmapCache = new LruCache<>(cacheSize);
+            for (int i = 0; i < size; i++) {
+                RecyclerView.ViewHolder holder = adapter.createViewHolder(recyclerView, adapter.getItemViewType(i));
+                adapter.onBindViewHolder(holder, i);
+                holder.itemView.measure(
+                        View.MeasureSpec.makeMeasureSpec(recyclerView.getWidth(), View.MeasureSpec.EXACTLY),
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                holder.itemView.layout(0, 0, holder.itemView.getMeasuredWidth(),
+                        holder.itemView.getMeasuredHeight());
+                holder.itemView.setDrawingCacheEnabled(true);
+                holder.itemView.buildDrawingCache();
+                Bitmap drawingCache = holder.itemView.getDrawingCache();
+                if (drawingCache != null) {
+                    bitmapCache.put(String.valueOf(i), drawingCache);
+                }
+                height += holder.itemView.getMeasuredHeight();
+            }
+            // 这个地方容易出现OOM，关键是要看截取RecyclerView的展开的宽高
+            bigBitmap = DrawableUtils.createBitmapSafely(recyclerView.getMeasuredWidth(), height, Bitmap.Config.ARGB_8888, 1);
+            if (bigBitmap == null) {
+                return null;
+            }
+            Canvas canvas = new Canvas(bigBitmap);
+            Drawable background = recyclerView.getBackground();
+            //先画RecyclerView的背景色
+            if (background instanceof ColorDrawable) {
+                ColorDrawable lColorDrawable = (ColorDrawable) background;
+                int color = lColorDrawable.getColor();
+                canvas.drawColor(color);
+            }
+            for (int i = 0; i < size; i++) {
+                Bitmap bitmap = bitmapCache.get(String.valueOf(i));
+                canvas.drawBitmap(bitmap, 0f, iHeight, paint);
+                iHeight += bitmap.getHeight();
+                bitmap.recycle();
+            }
+            canvas.setBitmap(null);
+        }
+        return bigBitmap;
+    }
+
 
 
 }

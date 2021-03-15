@@ -27,9 +27,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.xuexiang.Photale.R;
+import com.xuexiang.Photale.components.ImageSelectGridAdapter;
+import com.xuexiang.Photale.components.PictureSelectorFragment;
 import com.xuexiang.Photale.core.BaseFragment;
 import com.xuexiang.Photale.fragment.homePage.HomeFragment;
+import com.xuexiang.Photale.utils.Utils;
 import com.xuexiang.Photale.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xui.utils.ResUtils;
@@ -38,20 +43,23 @@ import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.banner.widget.banner.BannerItem;
 import com.xuexiang.xui.widget.banner.widget.banner.SimpleImageBanner;
 import com.xuexiang.xui.widget.banner.widget.banner.base.BaseBanner;
+import com.xuexiang.xui.widget.button.shadowbutton.ShadowButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 @Page(name = "主页")
-public class mainPagefragment extends BaseFragment implements BaseBanner.OnItemClickListener<BannerItem>{
+public class mainPagefragment extends BaseFragment implements BaseBanner.OnItemClickListener<BannerItem>, ImageSelectGridAdapter.OnAddPicClickListener{
 
     private List<BannerItem> mData;
 
     @BindView(R.id.sib_simple_usage)
     SimpleImageBanner sib_simple_usage;
 
+    private List<LocalMedia> mSelectList = new ArrayList<>();
 
 
     public static mainPagefragment newInstance() {
@@ -127,6 +135,13 @@ public class mainPagefragment extends BaseFragment implements BaseBanner.OnItemC
 //            item.title = "test";
 //         mData.add(item);
          sib_simple_usage();
+
+    }
+
+    @OnClick(R.id.autoText)
+    public void onViewClicked() {
+        openPage(PictureSelectorFragment.class);
+        System.out.println("--------step in click status---------------");
     }
 
     @Override
@@ -139,5 +154,12 @@ public class mainPagefragment extends BaseFragment implements BaseBanner.OnItemC
     @Override
     public void onItemClick(View view, BannerItem item, int position) {
         XToastUtils.toast("position--->" + position + ", item:" + item.title);
+    }
+
+    @Override
+    public void onAddPicClick() {
+        Utils.getPictureSelector(this)
+                .selectionMedia(mSelectList)
+                .forResult(PictureConfig.CHOOSE_REQUEST);
     }
 }

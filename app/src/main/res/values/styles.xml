@@ -58,4 +58,10 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="AppTheme.Camera">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
 </resources>

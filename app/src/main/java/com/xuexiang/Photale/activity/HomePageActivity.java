@@ -32,6 +32,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.xuexiang.Photale.R;
+import com.xuexiang.Photale.components.PictureSelectorFragment;
 import com.xuexiang.Photale.components.tabbar.TestPageFragment;
 import com.xuexiang.Photale.components.tabbar.tablayout.ContentPage;
 import com.xuexiang.Photale.core.BaseActivity;
@@ -41,6 +42,7 @@ import com.xuexiang.Photale.fragment.homePage.HomeFragment;
 import com.xuexiang.Photale.utils.XToastUtils;
 import com.xuexiang.xui.adapter.FragmentAdapter;
 import com.xuexiang.xui.utils.ResUtils;
+import com.xuexiang.xui.widget.shadow.ShadowButton;
 import com.xuexiang.xui.widget.tabbar.EasyIndicator;
 import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.common.CollectionUtils;
@@ -57,6 +59,9 @@ public class HomePageActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigation;
 
+//    @BindView(R.id.autoText)
+//    ShadowButton autoText;
+
     private String[] mTitles;
 
 
@@ -68,11 +73,22 @@ public class HomePageActivity extends BaseActivity implements View.OnClickListen
 //        mViewPager  = findViewById(R.id.view_pager);
         openPage(HomeFragment.class);
 
+//        autoText = findViewById(R.id.autoText);
+//
+//        autoText.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                openNewPage(PictureSelectorFragment.class);
+//            }
+//        });
+
+
 
 //        mViewPager.setOffscreenPageLimit(ContentPage.size() - 1);
 
         initListeners();
         super.onCreate(savedInstanceState);
+
     }
 
 

@@ -38,9 +38,6 @@ import com.xuexiang.Photale.core.BaseActivity;
 import com.xuexiang.Photale.core.BaseFragment;
 import com.xuexiang.Photale.fragment.AboutFragment;
 import com.xuexiang.Photale.fragment.SettingsFragment;
-import com.xuexiang.Photale.fragment.news.NewsFragment;
-import com.xuexiang.Photale.fragment.profile.ProfileFragment;
-import com.xuexiang.Photale.fragment.trending.TrendingFragment;
 import com.xuexiang.Photale.utils.Utils;
 import com.xuexiang.Photale.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
@@ -111,9 +108,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         //主页内容填充
         BaseFragment[] fragments = new BaseFragment[]{
-                new NewsFragment(),
-                new TrendingFragment(),
-                new ProfileFragment()
+
         };
         FragmentAdapter<BaseFragment> adapter = new FragmentAdapter<>(getSupportFragmentManager(), fragments);
         viewPager.setOffscreenPageLimit(mTitles.length - 1);
