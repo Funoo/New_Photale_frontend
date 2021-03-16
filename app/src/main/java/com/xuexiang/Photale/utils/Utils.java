@@ -205,12 +205,12 @@ public final class Utils {
     public static PictureSelectionModel getPictureSelector(Fragment fragment) {
         return PictureSelector.create(fragment)
                 .openGallery(PictureMimeType.ofImage())
-                .theme(SettingSPUtils.getInstance().isUseCustomTheme() ? R.style.XUIPictureStyle_Custom : R.style.XUIPictureStyle)
+                .theme(SettingSPUtils.getInstance().isUseCustomTheme() ? R.style.XUIPictureStyle_Custom : R.style.XUIPictureStyle_Custom)
                 .maxSelectNum(8)
                 .minSelectNum(1)
                 .selectionMode(PictureConfig.MULTIPLE)
                 .previewImage(true)
-                .isCamera(false)
+                .isCamera(true)
                 .enableCrop(false)
                 .compress(true)
                 .previewEggs(true);
@@ -224,7 +224,7 @@ public final class Utils {
                 .minSelectNum(1)
                 .selectionMode(PictureConfig.MULTIPLE)
                 .previewImage(true)
-                .isCamera(false)
+                .isCamera(true)
                 .enableCrop(false)
                 .compress(true)
                 .previewEggs(true);

@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,6 +38,8 @@ import com.xuexiang.xui.widget.actionbar.TitleBar;
 import java.util.ArrayList;
 import java.util.List;
 import com.xuexiang.Photale.R;
+import com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText;
+import com.xuexiang.xui.widget.flowlayout.FlowTagLayout;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -47,9 +50,17 @@ public class PictureSelectorFragment extends BaseFragment implements ImageSelect
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
+    @BindView(R.id.flowlayout_display)
+    FlowTagLayout mDisplayFlowTagLayout;
+
+    @BindView(R.id.tagEdit)
+    MaterialEditText tagEdit;
+
     private ImageSelectGridAdapter mAdapter;
 
     private List<LocalMedia> mSelectList = new ArrayList<>();
+
+    private String tagString;
 
 
     @SuppressLint("ResourceAsColor")
@@ -76,27 +87,31 @@ public class PictureSelectorFragment extends BaseFragment implements ImageSelect
      */
     @Override
     protected void initViews() {
-        GridLayoutManager manager = new GridLayoutManager(getActivity(), 1, RecyclerView.VERTICAL, false);
+        GridLayoutManager manager = new GridLayoutManager(getActivity(), 3, RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(mAdapter = new ImageSelectGridAdapter(getActivity(), this));
         mAdapter.setSelectList(mSelectList);
         mAdapter.setSelectMax(8);
         mAdapter.setOnItemClickListener((position, v) -> PictureSelector.create(PictureSelectorFragment.this).themeStyle(R.style.XUIPictureStyle).openExternalPreview(position, mSelectList));
-    }
-
-
-
-    public void initClicked() {
         Utils.getPictureSelector(this)
                 .selectionMedia(mSelectList)
                 .forResult(PictureConfig.CHOOSE_REQUEST);
-        System.out.println("--------step in click status---------------");
     }
 
-    @OnClick(R.id.button_no_camera)
-    public void onViewClicked() {
-        initClicked();
-    }
+
+
+//    public void initClicked() {
+//        Utils.getPictureSelector(this)
+//                .selectionMedia(mSelectList)
+//                .forResult(PictureConfig.CHOOSE_REQUEST);
+//        System.out.println("--------step in click status---------------");
+//    }
+//
+//    @OnClick(R.id.button_no_camera)
+//    public void onViewClicked() {
+//        initClicked();
+//    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -119,5 +134,22 @@ public class PictureSelectorFragment extends BaseFragment implements ImageSelect
         Utils.getPictureSelector(this)
                 .selectionMedia(mSelectList)
                 .forResult(PictureConfig.CHOOSE_REQUEST);
+    }
+
+    @OnClick({R.id.btn_add_tag, R.id.btn_clear_tag})
+    void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.btn_add_tag:
+                tagString = tagEdit.getText().toString();
+                mDisplayFlowTagLayout.addTag(tagString);
+                tagEdit.clear();
+                System.out.println("--------------addTag-----------------");
+                break;
+            case R.id.btn_clear_tag:
+                mDisplayFlowTagLayout.clearTags();
+                break;
+            default:
+                break;
+        }
     }
 }

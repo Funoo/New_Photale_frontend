@@ -80,6 +80,17 @@
         <item>跑腿</item>
     </string-array>
 
+    <integer-array name="tags_selects_values">
+        <item>0</item>
+        <item>1</item>
+        <item>3</item>
+    </integer-array>
+
+    <!--标签-->
+    <string-array name="tags_values">
+
+    </string-array>
+
     <!--  修改这里的图标  -->
     <array name="grid_icons_entry">
         <item>@color/app_color_theme_1</item>
