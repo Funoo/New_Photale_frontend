@@ -15,6 +15,19 @@
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent">
+        <com.xuexiang.xui.widget.edittext.MultiLineEditText
+            android:id="@+id/article"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mlet_isFixHeight="false"
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
+
 
 
     <LinearLayout
@@ -101,6 +114,18 @@
         android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal|center"
         android:text="清除标签"
+        android:textSize="17dp"
+        android:fontFamily="Microsoft YaHei UI/Light"
+        android:textColor="@color/colorPrimary"
+        app:rb_backgroundColor="@color/xui_transparent"
+        app:rb_borderColor="@color/xui_transparent" />
+
+    <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+        style="@style/RoundButton.Auto"
+        android:id="@+id/generateText"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal|center"
+        android:text="生成文案"
         android:textSize="17dp"
         android:fontFamily="Microsoft YaHei UI/Light"
         android:textColor="@color/colorPrimary"
