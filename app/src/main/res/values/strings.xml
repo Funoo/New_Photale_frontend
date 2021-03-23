@@ -94,5 +94,7 @@
     <string name="lab_service_protocol"><![CDATA[<用户协议>]]></string>
     <string name="lab_logout_confirm">是否确认退出账号？</string>
     <string name="title_jump_login">跳过</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

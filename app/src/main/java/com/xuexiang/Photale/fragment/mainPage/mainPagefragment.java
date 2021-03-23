@@ -17,33 +17,27 @@
 
 package com.xuexiang.Photale.fragment.mainPage;
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
+import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.luck.picture.lib.style.PictureCropParameterStyle;
+import com.luck.picture.lib.style.PictureParameterStyle;
 import com.xuexiang.Photale.R;
-import com.xuexiang.Photale.components.ImageSelectGridAdapter;
+import com.xuexiang.Photale.components.LongPictureStyle.GlideEngine;
 import com.xuexiang.Photale.components.PictureSelectorFragment;
 import com.xuexiang.Photale.core.BaseFragment;
-import com.xuexiang.Photale.fragment.homePage.HomeFragment;
-import com.xuexiang.Photale.utils.Utils;
+import com.xuexiang.Photale.fragment.SmartAlbumFragment;
 import com.xuexiang.Photale.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
-import com.xuexiang.xui.utils.ResUtils;
-import com.xuexiang.xui.utils.ThemeUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.banner.widget.banner.BannerItem;
 import com.xuexiang.xui.widget.banner.widget.banner.SimpleImageBanner;
 import com.xuexiang.xui.widget.banner.widget.banner.base.BaseBanner;
-import com.xuexiang.xui.widget.button.shadowbutton.ShadowButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +46,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 @Page(name = "主页")
-public class mainPagefragment extends BaseFragment implements BaseBanner.OnItemClickListener<BannerItem>, ImageSelectGridAdapter.OnAddPicClickListener{
+public class mainPagefragment extends BaseFragment implements BaseBanner.OnItemClickListener<BannerItem>{
 
     private List<BannerItem> mData;
 
@@ -61,6 +55,10 @@ public class mainPagefragment extends BaseFragment implements BaseBanner.OnItemC
 
     private List<LocalMedia> mSelectList = new ArrayList<>();
 
+    private int REQUEST_CODE_CHOOSE = 0x000011;
+
+    private PictureParameterStyle mPictureParameterStyle;
+    private PictureCropParameterStyle mCropParameterStyle;
 
     public static mainPagefragment newInstance() {
         mainPagefragment firstPageFragment = new mainPagefragment();
@@ -138,10 +136,20 @@ public class mainPagefragment extends BaseFragment implements BaseBanner.OnItemC
 
     }
 
+    /***
+     * 打开文案生成界面
+     */
     @OnClick(R.id.autoText)
     public void onViewClicked() {
         openPage(PictureSelectorFragment.class);
-        System.out.println("--------step in click status---------------");
+    }
+
+    /***
+     * 打开智能排版页面
+     */
+    @OnClick(R.id.autoAdjust)
+    public void onAutoAdjustViewClicked() {
+        openPage(SmartAlbumFragment.class);
     }
 
     @Override
@@ -156,10 +164,18 @@ public class mainPagefragment extends BaseFragment implements BaseBanner.OnItemC
         XToastUtils.toast("position--->" + position + ", item:" + item.title);
     }
 
-    @Override
+
     public void onAddPicClick() {
-        Utils.getPictureSelector(this)
-                .selectionMedia(mSelectList)
-                .forResult(PictureConfig.CHOOSE_REQUEST);
+        PictureSelector.create(this)
+                .openGallery(PictureMimeType.ofImage())
+                .setPictureStyle(mPictureParameterStyle)
+                .isEnableCrop(true)// 是否裁剪 true or false
+                .maxSelectNum(10)// 最大图片选择数量 int
+                .minSelectNum(1)// 最小选择数量 int
+                .hideBottomControls(false)
+                .imageSpanCount(4)// 每行显示个数 int
+                .loadImageEngine(GlideEngine.createGlideEngine())
+                .selectionMode(PictureConfig.MULTIPLE)
+                .forResult(REQUEST_CODE_CHOOSE);//结果回调onActivityResult code
     }
 }

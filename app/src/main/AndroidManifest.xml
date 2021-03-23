@@ -37,6 +37,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <uses-sdk tools:overrideLibrary="com.luck.picture.lib,com.yalantis.ucrop"/>
+
+
 
     <application
         android:name=".MyApp"
@@ -50,7 +53,8 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustPan|stateHidden"
         tools:ignore="LockedOrientationActivity"
-        tools:targetApi="n">
+        tools:targetApi="n"
+        tools:replace="android:allowBackup,android:networkSecurityConfig">
 
         <activity
             android:name=".activity.SplashActivity"
@@ -177,6 +181,19 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"
+                tools:replace="android:resource"/>
+        </provider>
+
+        <provider
+            android:name="com.luck.picture.lib.PictureFileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            tools:replace="android:authorities"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                tools:replace="android:resource"
                 android:resource="@xml/file_paths" />
         </provider>
 
