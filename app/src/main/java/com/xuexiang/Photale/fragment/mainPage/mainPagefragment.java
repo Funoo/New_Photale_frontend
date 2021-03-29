@@ -28,6 +28,9 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.style.PictureCropParameterStyle;
 import com.luck.picture.lib.style.PictureParameterStyle;
 import com.xuexiang.Photale.R;
+import com.xuexiang.Photale.activity.SmartAlbumActivity;
+import com.xuexiang.Photale.activity.TestActivity;
+import com.xuexiang.Photale.activity.TestActivity2;
 import com.xuexiang.Photale.components.LongPictureStyle.GlideEngine;
 import com.xuexiang.Photale.components.PictureSelectorFragment;
 import com.xuexiang.Photale.core.BaseFragment;
@@ -38,6 +41,7 @@ import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.banner.widget.banner.BannerItem;
 import com.xuexiang.xui.widget.banner.widget.banner.SimpleImageBanner;
 import com.xuexiang.xui.widget.banner.widget.banner.base.BaseBanner;
+import com.xuexiang.xutil.app.ActivityUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,7 +153,9 @@ public class mainPagefragment extends BaseFragment implements BaseBanner.OnItemC
      */
     @OnClick(R.id.autoAdjust)
     public void onAutoAdjustViewClicked() {
-        openPage(SmartAlbumFragment.class);
+        ActivityUtils.startActivity(TestActivity2.class);
+//        openPage(TestActivity.class);
+//        openPage(SmartAlbumFragment.class);
     }
 
     @Override

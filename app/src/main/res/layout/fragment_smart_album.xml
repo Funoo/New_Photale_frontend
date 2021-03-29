@@ -5,17 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/xui_config_color_white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".activity.TestActivity2">
 
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_marginTop="?attr/xui_config_content_spacing_horizontal"
-                android:overScrollMode="never"
-                android:layout_gravity="center_horizontal|center"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_2"
+        android:layout_marginTop="?attr/xui_config_content_spacing_horizontal"
+        android:overScrollMode="never"
+        android:layout_gravity="center_horizontal|center"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,4 +37,28 @@
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
+    <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+        style="@style/RoundButton.Auto"
+        android:id="@+id/generateLongPic"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal|center"
+        android:text="合成长图并预览"
+        android:textSize="17dp"
+        android:onClick="generateLongImages"
+        android:fontFamily="Microsoft YaHei UI/Light"
+        android:textColor="@color/colorPrimary"
+        app:rb_backgroundColor="@color/xui_transparent"
+        app:rb_borderColor="@color/xui_transparent" />
+
+    <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+        style="@style/RoundButton.Auto"
+        android:id="@+id/addLongPicTag"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal|center"
+        android:text="添加标签"
+        android:textSize="17dp"
+        android:fontFamily="Microsoft YaHei UI/Light"
+        android:textColor="@color/colorPrimary"
+        app:rb_backgroundColor="@color/xui_transparent"
+        app:rb_borderColor="@color/xui_transparent" />
 </LinearLayout>
