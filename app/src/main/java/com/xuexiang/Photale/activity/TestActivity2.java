@@ -63,6 +63,9 @@ import cc.shinichi.library.tool.ui.ToastUtil;
 public class TestActivity2 extends XPageActivity {
 
     private static final String TAG = "TestActivity";
+
+    private static int flag = 0;
+
     private GridImageAdapter mAdapter;
 
     private int REQUEST_CODE_CHOOSE = 0x000011;
@@ -192,6 +195,7 @@ public class TestActivity2 extends XPageActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test2);
         System.out.println("oncreate");
+        initView();
 //        openPage(SmartAlbumFragment.class, getIntent().getExtras());
         getSupportFragmentManager().registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
             @Override
@@ -216,15 +220,12 @@ public class TestActivity2 extends XPageActivity {
             public void onFragmentActivityCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
                 super.onFragmentActivityCreated(fm, f, savedInstanceState);
                 System.out.println("FragmentActivityCreated");
-                System.out.println(fm.findFragmentById(R.id.smart_album_fragment).getView().findViewById(R.id.recycler_view_2));
             }
 
             @Override
             public void onFragmentViewCreated(FragmentManager fm, Fragment f, View v, Bundle savedInstanceState) {
                 super.onFragmentViewCreated(fm, f, v, savedInstanceState);
                 System.out.println("FragmentViewCreated");
-                initView();
-                System.out.println("INITVIEW done");
             }
 
             @Override
@@ -232,7 +233,7 @@ public class TestActivity2 extends XPageActivity {
                 super.onFragmentStarted(fm, f);
                 System.out.println("FragmentStarted");
                 System.out.println(fm.findFragmentById(R.id.smart_album_fragment).getView().findViewById(R.id.recycler_view_2));
-                System.out.println(f.getView().findViewById(R.id.recycler_view_2));
+//                System.out.println(f.getView().findViewById(R.id.recycler_view_2));
                 setView(f);
             }
 
@@ -279,20 +280,6 @@ public class TestActivity2 extends XPageActivity {
                 System.out.println("FragmentDetached");
             }
         }, true);
-        initView();
-//        openPage(SmartAlbumFragment.class, getIntent().getExtras());
-        /**
-         *  Wait To Solve
-         */
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        fragmentManager.beginTransaction()
-//                .replace(R.id.fragment_container, SmartAlbumFragment.class, null)
-//                .setReorderingAllowed(true)
-//                .addToBackStack(null)
-//                .commit();
-//        SmartAlbumFragment smartAlbumFragment = (SmartAlbumFragment) fragmentManager.findFragmentById(R.id.fragment_container);
-//        System.out.println( fragmentManager.findFragmentById(R.id.fragment_container).getId());
-//        System.out.println("getSupportFragmentManager().findFragmentByTag(\"smartAlbum\").getView()" + fragmentManager.findFragmentById(R.id.fragment_container).getView().findViewById(R.id.recycler_view_2).toString());
     }
 
 
@@ -322,41 +309,46 @@ public class TestActivity2 extends XPageActivity {
 
 
     private void setView(Fragment fragment) {
-        System.out.println(fragment.getView().findViewById(R.id.recycler_view_2));
-        RecyclerView mRecyclerView =  fragment.getView().findViewById(R.id.recycler_view_2);
-        FullyGridLayoutManager manager = new FullyGridLayoutManager(this,
-                4, GridLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(manager);
-        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(4,
-                ScreenUtils.dip2px(getContext(), 8), false));
-        mAdapter = new GridImageAdapter(getContext(), onAddPicClickListener);
-        mAdapter.setSelectMax(maxSelectNum);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener((v, position) -> {
-            List<LocalMedia> selectList = mAdapter.getData();
-            if (selectList.size() > 0) {
-                LocalMedia media = selectList.get(position);
-                String mimeType = media.getMimeType();
-                int mediaType = PictureMimeType.getMimeType(mimeType);
-                switch (mediaType) {
-                    case PictureConfig.TYPE_VIDEO:
-                        // 预览视频
-                        PictureSelector.create(TestActivity2.this).externalPictureVideo(media.getPath());
-                        break;
-                    case PictureConfig.TYPE_AUDIO:
-                        // 预览音频
-                        PictureSelector.create(TestActivity2.this).externalPictureAudio(media.getPath());
-                        break;
-                    default:
-                        PictureSelector.create(TestActivity2.this)
-                                .setPictureStyle(mPictureParameterStyle)// 动态自定义相册主题
-                                .isNotPreviewDownload(true)// 预览图片长按是否可以下载
-                                .imageEngine(GlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
-                                .openExternalPreview(position, selectList);
-                        break;
+        if (flag == 0){
+            System.out.println(fragment.getView().findViewById(R.id.recycler_view_2));
+            RecyclerView mRecyclerView =  fragment.getView().findViewById(R.id.recycler_view_2);
+            FullyGridLayoutManager manager = new FullyGridLayoutManager(this,
+                    4, GridLayoutManager.VERTICAL, false);
+            mRecyclerView.setLayoutManager(manager);
+            mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(4,
+                    ScreenUtils.dip2px(getContext(), 8), false));
+            mAdapter = new GridImageAdapter(getContext(), onAddPicClickListener);
+            mAdapter.setSelectMax(maxSelectNum);
+            mRecyclerView.setAdapter(mAdapter);
+            mAdapter.setOnItemClickListener((v, position) -> {
+                List<LocalMedia> selectList = mAdapter.getData();
+                if (selectList.size() > 0) {
+                    LocalMedia media = selectList.get(position);
+                    String mimeType = media.getMimeType();
+                    int mediaType = PictureMimeType.getMimeType(mimeType);
+                    switch (mediaType) {
+                        case PictureConfig.TYPE_VIDEO:
+                            // 预览视频
+                            PictureSelector.create(TestActivity2.this).externalPictureVideo(media.getPath());
+                            break;
+                        case PictureConfig.TYPE_AUDIO:
+                            // 预览音频
+                            PictureSelector.create(TestActivity2.this).externalPictureAudio(media.getPath());
+                            break;
+                        default:
+                            PictureSelector.create(TestActivity2.this)
+                                    .setPictureStyle(mPictureParameterStyle)// 动态自定义相册主题
+                                    .isNotPreviewDownload(true)// 预览图片长按是否可以下载
+                                    .imageEngine(GlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
+                                    .openExternalPreview(position, selectList);
+                            break;
+                    }
                 }
-            }
-        });
+            });
+            flag = 1;
+        }else {
+            System.out.println("flag is " + flag);
+        }
     }
 
 //    class FragmentSubscriber extends FragmentManager.FragmentLifecycleCallbacks {
@@ -430,10 +422,6 @@ public class TestActivity2 extends XPageActivity {
                 drawLongPictureUtil.startDraw();
             }
         });
-        if (TextUtils.isEmpty(resultPath)) {
-            ToastUtil.getInstance()._short(this,"暂无长图");
-            return;
-        }
         ImagePreview
                 .getInstance()
                 .setContext(TestActivity2.this)
@@ -445,7 +433,7 @@ public class TestActivity2 extends XPageActivity {
     /**
      * 返回结果回调
      */
-    private static class MyResultCallback implements OnResultCallbackListener<LocalMedia> {
+    private class MyResultCallback implements OnResultCallbackListener<LocalMedia> {
         private WeakReference<GridImageAdapter> mAdapterWeakReference;
 
         public MyResultCallback(GridImageAdapter adapter) {
@@ -455,6 +443,14 @@ public class TestActivity2 extends XPageActivity {
 
         @Override
         public void onResult(List<LocalMedia> result) {
+            System.out.println("jinru onResult");
+            List<LocalMedia> selectList = result;
+            mCurrentSelectedPath.clear();
+            final StringBuffer stringBuffer = new StringBuffer();
+            for (LocalMedia paths : selectList) {
+                stringBuffer.append(paths.getCutPath()).append("\n");
+                mCurrentSelectedPath.add(paths.getCutPath());
+            }
             for (LocalMedia media : result) {
                 Log.i(INFO, "是否压缩:" + media.isCompressed());
                 Log.i(INFO, "压缩:" + media.getCompressPath());
@@ -483,30 +479,6 @@ public class TestActivity2 extends XPageActivity {
 
     @Override protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        System.out.println("jinru onActivityResult");
-        System.out.println("data is " + data.getData());
-
-        if (resultCode == Activity.RESULT_OK) {
-            List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
-            System.out.println("看看mCurrentSelectedPath 是什么  " + mCurrentSelectedPath.size());
-            mCurrentSelectedPath.clear();
-
-            System.out.println("进入第一个if");
-            System.out.println("看看requestCode是什么 " + requestCode);
-            System.out.println("看看mCurrentSelectedPath 是什么  " + mCurrentSelectedPath.size());
-
-            final StringBuffer stringBuffer = new StringBuffer();
-            for (LocalMedia paths : selectList) {
-                stringBuffer.append(paths.getCutPath()).append("\n");
-                mCurrentSelectedPath.add(paths.getCutPath());
-            }
-            System.out.println(selectList);
-            mAdapter.setList(selectList);
-            mAdapter.notifyDataSetChanged();
-
-            System.out.println("看看mCurrentSelectedPath 是什么  " + mCurrentSelectedPath.size());
-        }
         if (resultCode == RESULT_OK) {
             if (requestCode == PictureConfig.CHOOSE_REQUEST) {// 图片选择结果回调
                 List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
@@ -596,6 +568,8 @@ public class TestActivity2 extends XPageActivity {
             BroadcastManager.getInstance(getContext()).unregisterReceiver(broadcastReceiver,
                     BroadcastAction.ACTION_DELETE_PREVIEW_POSITION);
         }
+        flag = 0;
+        System.out.println("into OnDestroy");
     }
 
     public Context getContext() {
