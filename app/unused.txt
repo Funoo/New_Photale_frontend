@@ -5707,9 +5707,6 @@ com.zhihu.matisse.internal.entity.Item:
     public static final java.lang.String ITEM_DISPLAY_NAME_CAPTURE
 android.support.v4.media.MediaBrowserCompat$ItemReceiver:
     void <init>(java.lang.String,android.support.v4.media.MediaBrowserCompat$ItemCallback,android.os.Handler)
-com.xuexiang.Photale.activity.RecordMainActivity:
-    public static final int TAKE_PHOTO
-    public static final int CHOOSE_PHOTO
 io.reactivex.observers.TestObserver:
     public static io.reactivex.observers.TestObserver create()
     public static io.reactivex.observers.TestObserver create(io.reactivex.Observer)
@@ -16522,7 +16519,6 @@ com.luck.picture.lib.PictureSelectionModel:
     public com.luck.picture.lib.PictureSelectionModel synOrAsy(boolean)
     public com.luck.picture.lib.PictureSelectionModel compressFocusAlpha(boolean)
     public com.luck.picture.lib.PictureSelectionModel isQuickCapture(boolean)
-    public com.luck.picture.lib.PictureSelectionModel isOriginalImageControl(boolean)
     public com.luck.picture.lib.PictureSelectionModel compressSavePath(java.lang.String)
     public com.luck.picture.lib.PictureSelectionModel cameraFileName(java.lang.String)
     public com.luck.picture.lib.PictureSelectionModel renameCropFileName(java.lang.String)
@@ -20037,6 +20033,8 @@ org.aspectj.runtime.reflect.MethodSignatureImpl:
     private java.lang.reflect.Method search(java.lang.Class,java.lang.String,java.lang.Class[],java.util.Set)
     public java.lang.reflect.Method getMethod()
     private java.lang.reflect.Method method
+com.xuexiang.Photale.activity.TestActivity2$6:
+    void <init>(com.xuexiang.Photale.activity.TestActivity2)
 com.bumptech.glide.gifdecoder.StandardGifDecoder:
     public void <init>(com.bumptech.glide.gifdecoder.GifDecoder$BitmapProvider,com.bumptech.glide.gifdecoder.GifHeader,java.nio.ByteBuffer)
     private com.bumptech.glide.gifdecoder.GifHeaderParser getHeaderParser()
@@ -23037,8 +23035,6 @@ com.github.mikephil.charting.components.Legend:
     public float mTextWidthMax
 com.alibaba.android.vlayout.layout.FixLayoutHelper$FixViewAppearAnimatorListener:
     private com.alibaba.android.vlayout.LayoutManagerHelper mLayoutManagerHelper
-com.xuexiang.Photale.adapter.RecordAdapter$ViewHolder:
-    final synthetic com.xuexiang.Photale.adapter.RecordAdapter this$0
 okhttp3.ConnectionSpec:
     public static final okhttp3.ConnectionSpec COMPATIBLE_TLS
 com.luck.picture.lib.compress.Luban:
@@ -23098,7 +23094,6 @@ com.wonderkiln.camerakit.SurfaceViewPreview:
 com.just.agentweb.core.client.MiddlewareWebClientBase:
     private static java.lang.String TAG
 com.xuexiang.Photale.fragment.timeline.TimeLineFragment$TimeLineAdapter$FirstDealHolder:
-    de.hdodenhof.circleimageview.CircleImageView dealProductImage
     final synthetic com.xuexiang.Photale.fragment.timeline.TimeLineFragment$TimeLineAdapter this$1
 com.xuexiang.xaop.aspectj.DebugLogAspectJ:
     private static synthetic java.lang.Throwable ajc$initFailureCause
@@ -23144,7 +23139,6 @@ com.xuexiang.xaop.aspectj.MainThreadAspectJ:
 com.just.agentweb.core.web.controller.DefaultUIController$4:
     final synthetic com.just.agentweb.core.web.controller.DefaultUIController this$0
 com.xuexiang.Photale.fragment.timeline.TimeLineFragment$TimeLineAdapter$MiddleDealHolder:
-    de.hdodenhof.circleimageview.CircleImageView dealProductImage
     final synthetic com.xuexiang.Photale.fragment.timeline.TimeLineFragment$TimeLineAdapter this$1
 com.xuexiang.Photale.core.webview.XPageWebViewFragment$7:
     final synthetic com.xuexiang.Photale.core.webview.XPageWebViewFragment this$0
@@ -23250,6 +23244,8 @@ com.xuexiang.Photale.activity.timeline.TimeLineActivity$TimeLineAdapter:
     final synthetic com.xuexiang.Photale.activity.timeline.TimeLineActivity this$0
 com.bumptech.glide.request.target.ViewTarget:
     private static boolean isTagUsedAtLeastOnce
+com.xuexiang.Photale.fragment.mainPage.mainPagefragment_ViewBinding$3:
+    final synthetic com.xuexiang.Photale.fragment.mainPage.mainPagefragment_ViewBinding this$0
 com.xuexiang.xui.widget.progress.loading.RotateLoadingView:
     private boolean mIsAutoMode
 com.xuexiang.Photale.core.http.loader.ProgressLoader:
@@ -23644,6 +23640,8 @@ kotlin.time.Duration:
     private static final double ZERO
     private static final double INFINITE
     public static final kotlin.time.Duration$Companion Companion
+com.xuexiang.Photale.activity.TestActivity2$1:
+    final synthetic com.xuexiang.Photale.activity.TestActivity2 this$0
 com.xuexiang.xupdate._XUpdate:
     private static boolean sIsShowUpdatePrompter
 com.xuexiang.xpage.base.XPageFragment:
@@ -23672,7 +23670,6 @@ com.luck.picture.lib.PictureSelectionModel:
 com.xuexiang.xui.widget.behavior.TranslateAnimateHelper:
     public float mStartY
 com.xuexiang.Photale.fragment.timeline.TimeLineFragment$TimeLineAdapter$LastDealHolder:
-    de.hdodenhof.circleimageview.CircleImageView dealProductImage
     final synthetic com.xuexiang.Photale.fragment.timeline.TimeLineFragment$TimeLineAdapter this$1
 okhttp3.internal.platform.AndroidPlatform:
     private final java.lang.Class sslParametersClass
@@ -23840,11 +23837,12 @@ io.reactivex.internal.operators.completable.CompletableNever:
 io.reactivex.observers.BaseTestConsumer:
     protected java.lang.Thread lastThread
 com.xuexiang.Photale.activity.TestActivity2:
-    static synthetic com.luck.picture.lib.style.PictureCropParameterStyle access$600(com.xuexiang.Photale.activity.TestActivity2)
-    static synthetic int access$700(com.xuexiang.Photale.activity.TestActivity2)
+    static synthetic com.luck.picture.lib.style.PictureCropParameterStyle access$500(com.xuexiang.Photale.activity.TestActivity2)
+    static synthetic int access$600(com.xuexiang.Photale.activity.TestActivity2)
     private int REQUEST_CODE_CHOOSE
     private com.luck.picture.lib.style.PictureCropParameterStyle mCropParameterStyle
     private androidx.fragment.app.FragmentManager$FragmentLifecycleCallbacks mFragmentLifecycleCallbacks
+    private static int initView_flag
 com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart:
     protected com.github.mikephil.charting.charts.BarChart mChart
 com.xuexiang.xhttp2.subsciber.DownloadSubscriber$1:
@@ -24014,8 +24012,6 @@ com.xuexiang.xui.widget.statelayout.StateLayoutConfig:
     public int locationOffMessageRes
     public int retryMessageRes
     public int loadingMessageRes
-com.xuexiang.Photale.activity.timeline.TimeLineModel:
-    public int imageFileName
 com.xuexiang.Photale.components.PictureSelectorFragment_ViewBinding$2:
     final synthetic com.xuexiang.Photale.components.PictureSelectorFragment_ViewBinding this$0
 kotlin.KotlinVersion:

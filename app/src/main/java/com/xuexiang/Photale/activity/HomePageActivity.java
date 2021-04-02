@@ -82,10 +82,6 @@ public class HomePageActivity extends BaseActivity implements View.OnClickListen
 //            }
 //        });
 
-
-
-//        mViewPager.setOffscreenPageLimit(ContentPage.size() - 1);
-
         initListeners();
         super.onCreate(savedInstanceState);
 

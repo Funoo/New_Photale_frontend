@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,6 +104,28 @@ public class DairyFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getFocus();
+    }
+
+    //主界面获取焦点
+    private void getFocus() {
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (keyEvent.getAction() == KeyEvent.ACTION_UP && i == KeyEvent.KEYCODE_BACK) {
+                    getActivity().onBackPressed();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    @Override
     protected void initListeners() {
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -138,4 +161,5 @@ public class DairyFragment extends BaseFragment {
             return DemoDataProvider.sNineGridPics;
         }
     }
+
 }

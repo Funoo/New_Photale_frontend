@@ -34,6 +34,7 @@ import com.xuexiang.Photale.activity.TestActivity2;
 import com.xuexiang.Photale.components.LongPictureStyle.GlideEngine;
 import com.xuexiang.Photale.components.PictureSelectorFragment;
 import com.xuexiang.Photale.core.BaseFragment;
+import com.xuexiang.Photale.fragment.Dairy.DairyFragment;
 import com.xuexiang.Photale.fragment.SmartAlbumFragment;
 import com.xuexiang.Photale.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
@@ -156,6 +157,14 @@ public class mainPagefragment extends BaseFragment implements BaseBanner.OnItemC
         ActivityUtils.startActivity(TestActivity2.class);
 //        openPage(TestActivity.class);
 //        openPage(SmartAlbumFragment.class);
+    }
+
+    /***
+     * 打开生活日志页面
+     */
+    @OnClick(R.id.dairy)
+    public void onDairyClicked() {
+        openPage(DairyFragment.class);
     }
 
     @Override

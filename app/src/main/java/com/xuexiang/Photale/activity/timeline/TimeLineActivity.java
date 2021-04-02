@@ -54,7 +54,7 @@ public class TimeLineActivity extends BaseActivity {
     private void initData() {
         TimeLineModel timeLineDummmy1 = new TimeLineModel(1,R.drawable.ic_photale_img,"BlackBerry", "Rs 25000.00","JAN","2018");
         rvList.add(timeLineDummmy1);
-        TimeLineModel timeLineDummmy2 = new TimeLineModel(2,R.drawable.bg,"Samsung", "Rs 65000.00","OCt","2017");
+        TimeLineModel timeLineDummmy2 = new TimeLineModel(2,R.drawable.bg_girl,"Samsung", "Rs 65000.00","OCt","2017");
         rvList.add(timeLineDummmy2);
         TimeLineModel timeLineDummmy3 = new TimeLineModel(2,R.drawable.bg,"One Plus", "Rs 45000.00","AUG","2018");
         rvList.add(timeLineDummmy3);

@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -26,6 +27,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.luck.picture.lib.PictureSelector;
@@ -65,6 +67,8 @@ public class TestActivity2 extends XPageActivity {
     private static final String TAG = "TestActivity";
 
     private static int flag = 0;
+
+    private static int initView_flag = 0;
 
     private GridImageAdapter mAdapter;
 
@@ -128,10 +132,6 @@ public class TestActivity2 extends XPageActivity {
         public void onFragmentViewCreated(@NonNull FragmentManager fm, @NonNull Fragment f, @NonNull View v, @Nullable Bundle savedInstanceState) {
             super.onFragmentViewCreated(fm, f, v, savedInstanceState);
             Log.i(TAG, "onFragmentViewCreated: "+f.getClass().getSimpleName());
-            System.out.println("onFRAGMETcreated");
-            openPage(SmartAlbumFragment.class, getIntent().getExtras());
-            initView();
-            System.out.println("INITVIEW done");
         }
 
         @Override
@@ -196,7 +196,6 @@ public class TestActivity2 extends XPageActivity {
         setContentView(R.layout.activity_test2);
         System.out.println("oncreate");
         initView();
-//        openPage(SmartAlbumFragment.class, getIntent().getExtras());
         getSupportFragmentManager().registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
             @Override
             public void onFragmentPreAttached(@NotNull FragmentManager fm, @NotNull Fragment f, Context context) {
@@ -286,24 +285,31 @@ public class TestActivity2 extends XPageActivity {
 
     //
     private void initView() {
-        drawLongPictureUtil = new LongPictureCreate(TestActivity2.this);
-        drawLongPictureUtil.setListener(new LongPictureCreate.Listener() {
-            @Override public void onSuccess(String path) {
-                runOnUiThread(new Runnable() {
-                    @Override public void run() {
-                        resultPath = path;
-                    }
-                });
-            }
+            System.out.println("step in initView");
+            drawLongPictureUtil = new LongPictureCreate(TestActivity2.this);
+            System.out.println("step in initView ahead of setListener");
+            drawLongPictureUtil.setListener(new LongPictureCreate.Listener() {
+                @Override
+                public void onSuccess(String path) {
+                    System.out.println("step in onSuccess");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            resultPath = path;
+                        }
+                    });
+                }
 
-            @Override public void onFail() {
-                runOnUiThread(new Runnable() {
-                    @Override public void run() {
-                        Toast.makeText(TestActivity2.this.getApplicationContext(), "onFail！",Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        });
+                @Override
+                public void onFail() {
+                    System.out.println("step in onFail");
+                    runOnUiThread(new Runnable() {
+                        @Override public void run() {
+                            Toast.makeText(TestActivity2.this.getApplicationContext(), "onFail！",Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            });
     }
 
 
@@ -373,12 +379,12 @@ public class TestActivity2 extends XPageActivity {
                         .minSelectNum(1)// 最小选择数量 int
                         .hideBottomControls(false)
                         .imageSpanCount(4)// 每行显示个数 int
-                        .loadImageEngine(GlideEngine.createGlideEngine())
+                        .imageEngine(GlideEngine.createGlideEngine())
                         .selectionMode(PictureConfig.MULTIPLE)
                         .isCamera(true)
                         .selectionData(mSelectList)
                         .selectionData(mAdapter.getData())
-//                        .forResult(REQUEST_CODE_CHOOSE);// 是否传入已选图片
+                        .isOriginalImageControl(true)
                         .forResult(new MyResultCallback(mAdapter));
 //                .forResult(REQUEST_CODE_CHOOSE);结果回调onActivityResult code
             } else {
@@ -393,13 +399,10 @@ public class TestActivity2 extends XPageActivity {
 //                        .loadCacheResourcesCallback(GlideCacheEngine.createCacheEngine())// 获取图片资源缓存，主要是解决华为10部分机型在拷贝文件过多时会出现卡的问题，这里可以判断只在会出现一直转圈问题机型上使用
                         .compressQuality(60)// 图片压缩后输出质量
                         .glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
-                        .selectionData(mAdapter.getData())// 是否传入已选图片
-                        .isPreviewEggs(false)//预览图片时 是否增强左右滑动图片体验(图片滑动一半即可看到上一张是否选中)
-                        .cutOutQuality(90)// 裁剪输出质量 默认100
+                        .isPreviewEggs(true)//预览图片时 是否增强左右滑动图片体验(图片滑动一半即可看到上一张是否选中)
                         .selectionData(mSelectList)
                         .selectionData(mAdapter.getData())// 是否传入已选图片
                         .minimumCompressSize(100)// 小于100kb的图片不压缩
-//                        .forResult(REQUEST_CODE_CHOOSE);
                         .forResult(new MyResultCallback(mAdapter));
             }
         }
@@ -413,15 +416,7 @@ public class TestActivity2 extends XPageActivity {
             ToastUtil.getInstance()._short(this,"请选择长图");
             return;
         }
-        Glide.with(this).asBitmap().load("https://source.unsplash.com/random").into(new SimpleTarget<Bitmap>() {
-            @Override
-            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-
-                drawLongPictureUtil.setButtomBitmap(resource);
-                drawLongPictureUtil.setData(mCurrentSelectedPath);
-                drawLongPictureUtil.startDraw();
-            }
-        });
+        System.out.println("resultPath is " + resultPath);
         ImagePreview
                 .getInstance()
                 .setContext(TestActivity2.this)
@@ -451,6 +446,23 @@ public class TestActivity2 extends XPageActivity {
                 stringBuffer.append(paths.getCutPath()).append("\n");
                 mCurrentSelectedPath.add(paths.getCutPath());
             }
+            System.out.println("ahead of  Glide.with");
+            Glide.with(TestActivity2.this).asBitmap().load("https://source.unsplash.com/random").into(new CustomTarget<Bitmap>() {
+                @Override
+                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                    System.out.println("in Glide.with ahead of setButtomBitmap");
+                    drawLongPictureUtil.setButtomBitmap(resource);
+                    System.out.println("in Glide.with ahead of setData");
+                    drawLongPictureUtil.setData(mCurrentSelectedPath);
+                    System.out.println("in Glide.with ahead of startDraw");
+                    drawLongPictureUtil.startDraw();
+                }
+
+                @Override
+                public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                }
+            });
             for (LocalMedia media : result) {
                 Log.i(INFO, "是否压缩:" + media.isCompressed());
                 Log.i(INFO, "压缩:" + media.getCompressPath());
@@ -569,6 +581,7 @@ public class TestActivity2 extends XPageActivity {
                     BroadcastAction.ACTION_DELETE_PREVIEW_POSITION);
         }
         flag = 0;
+        initView_flag = 0;
         System.out.println("into OnDestroy");
     }
 

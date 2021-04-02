@@ -50,7 +50,7 @@ import com.xuexiang.xpage.annotation.Page;
 public class TimeLineFragment extends BaseFragment {
     RecyclerView rv;
     TimeLineFragment.TimeLineAdapter timeLineAdapter;
-    ArrayList<TimeLineModel> rvList = new ArrayList<>();
+    private static ArrayList<TimeLineModel> rvList = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -58,8 +58,13 @@ public class TimeLineFragment extends BaseFragment {
     }
 
     @Override
-    protected void initViews() {
+    public void onStart() {
+        super.onStart();
+        initData();
+    }
 
+    @Override
+    protected void initViews() {
     }
 
     @Nullable
@@ -72,8 +77,15 @@ public class TimeLineFragment extends BaseFragment {
         rv.setLayoutManager(mLayoutManager);
         timeLineAdapter = new TimeLineFragment.TimeLineAdapter(getActivity(),rvList);
         rv.setAdapter(timeLineAdapter);
-        initData();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        onHiddenChanged(false);
+        timeLineAdapter.notifyDataSetChanged();
+        System.out.println("TimeLine on Resume");
     }
 
     public static TimeLineFragment newInstance() {
@@ -82,20 +94,19 @@ public class TimeLineFragment extends BaseFragment {
     }
 
     private void initData() {
-        TimeLineModel timeLineDummmy1 = new TimeLineModel(1,R.drawable.ic_photale_img,"旅途", "中国广东","JAN","2020");
+        System.out.println("init TimeLine initData()");
+        TimeLineModel timeLineDummmy1 = new TimeLineModel(1,R.drawable.sunset,"家中夕阳", "中国广东","JAN","2020");
         rvList.add(timeLineDummmy1);
-        TimeLineModel timeLineDummmy2 = new TimeLineModel(2,R.drawable.meat,"美食", "汕头","FEB","2020");
+        TimeLineModel timeLineDummmy2 = new TimeLineModel(2,R.drawable.bg_girl,"美食", "汕头","FEB","2020");
         rvList.add(timeLineDummmy2);
-        TimeLineModel timeLineDummmy3 = new TimeLineModel(2,R.drawable.bg,"旅途", "中国广东","MAR","2020");
+        TimeLineModel timeLineDummmy3 = new TimeLineModel(2,R.drawable.river,"美丽的河", "中国广东","MAR","2020");
         rvList.add(timeLineDummmy3);
         TimeLineModel timeLineDummmy4 = new TimeLineModel(2,R.drawable.bg,"旅途", "中国广东","AUG","2020");
         rvList.add(timeLineDummmy4);
-        TimeLineModel timeLineDummmy5 = new TimeLineModel(2,R.drawable.bg,"旅途", "中国广东","NOV","2020");
+        TimeLineModel timeLineDummmy5 = new TimeLineModel(2,R.drawable.meat,"牛肉", "中国广东汕头","DEC","2020");
         rvList.add(timeLineDummmy5);
-        TimeLineModel timeLineDummmy6 = new TimeLineModel(2,R.drawable.bg,"旅途", "中国广东","DEC","2020");
+        TimeLineModel timeLineDummmy6 = new TimeLineModel(3,R.drawable.sakura,"春游赏樱", "山东青岛","JAN","2021");
         rvList.add(timeLineDummmy6);
-        TimeLineModel timeLineDummmy7 = new TimeLineModel(3,R.drawable.bg,"旅途", "中国广东","JAN","2021");
-        rvList.add(timeLineDummmy7);
         timeLineAdapter.notifyDataSetChanged();
     }
 
@@ -182,6 +193,7 @@ public class TimeLineFragment extends BaseFragment {
             void bind(TimeLineModel dealsModel) {
                 monthPurchased.setText(dealsModel.month);
                 yearPurchased.setText(dealsModel.year);
+                dealProductImage.setImageResource(dealsModel.imageFileName);
                 productName.setText(dealsModel.productName);
                 productPrice.setText(dealsModel.productPrice);
             }
@@ -200,6 +212,7 @@ public class TimeLineFragment extends BaseFragment {
             void bind(TimeLineModel dealsModel) {
                 monthPurchased.setText(dealsModel.month);
                 yearPurchased.setText(dealsModel.year);
+                dealProductImage.setImageResource(dealsModel.imageFileName);
                 productName.setText(dealsModel.productName);
                 productPrice.setText(dealsModel.productPrice);
             }
@@ -219,6 +232,7 @@ public class TimeLineFragment extends BaseFragment {
             void bind(TimeLineModel dealsModel) {
                 monthPurchased.setText(dealsModel.month);
                 yearPurchased.setText(dealsModel.year);
+                dealProductImage.setImageResource(dealsModel.imageFileName);
                 productName.setText(dealsModel.productName);
                 productPrice.setText(dealsModel.productPrice);
             }

@@ -52,6 +52,7 @@ public class LongPictureCreate extends View {
 
     public LongPictureCreate(Context context) {
         super(context);
+        System.out.println("step into LongPictureCreate");
         init(context);
     }
 
@@ -90,6 +91,7 @@ public class LongPictureCreate extends View {
 
     public void setData(List<String> imageList) {
         this.imageUrlList = imageList;
+        System.out.println("step into LongPicture Create setData");
         if (this.imageUrlList == null) {
             this.imageUrlList = new ArrayList<>();
         }
@@ -101,6 +103,7 @@ public class LongPictureCreate extends View {
     }
 
     public void startDraw() {
+        System.out.println("start startDraw()");
         // 需要先下载全部需要用到的图片（用户头像、图片等），下载完成后再进行长图的绘制操作
         new Thread(() -> {
             // 图片下载完成后，进行view的绘制
@@ -116,7 +119,7 @@ public class LongPictureCreate extends View {
     private int getAllImageHeight() {
         int height = 0;
         for (int i = 0; i < imageUrlList.size(); i++) {
-            int[] wh = com.xuexiang.Photale.utils.LongPictures.ImageUtil.getWidthHeight(localImagePathMap.get(imageUrlList.get(i)));
+            int[] wh = ImageUtil.getWidthHeight(localImagePathMap.get(imageUrlList.get(i)));
             int w = wh[0];
             int h = wh[1];
             wh[0] = (longPictureWidth - (picMargin) * 2);
@@ -133,7 +136,7 @@ public class LongPictureCreate extends View {
     }
 
     private Bitmap getSingleBitmap(String path) {
-        int[] wh = com.xuexiang.Photale.utils.LongPictures.ImageUtil.getWidthHeight(path);
+        int[] wh = ImageUtil.getWidthHeight(path);
         final int w = wh[0];
         final int h = wh[1];
         wh[0] = (longPictureWidth - (picMargin) * 2);
@@ -191,7 +194,7 @@ public class LongPictureCreate extends View {
 
         int height = 0;
         for (int i = 0; i < index + 1; i++) {
-            int[] wh = com.xuexiang.Photale.utils.LongPictures.ImageUtil.getWidthHeight(localImagePathMap.get(imageUrlList.get(i)));
+            int[] wh = ImageUtil.getWidthHeight(localImagePathMap.get(imageUrlList.get(i)));
             int w = wh[0];
             int h = wh[1];
             wh[0] = (longPictureWidth - (picMargin) * 2);
@@ -259,7 +262,7 @@ public class LongPictureCreate extends View {
 
         // 生成最终的文件，并压缩大小，这里使用的是：implementation 'com.github.nanchen2251:CompressHelper:1.0.5'
         try {
-            String path = com.xuexiang.Photale.utils.LongPictures.ImageUtil.saveBitmapBackPath(bitmapAll);
+            String path = ImageUtil.saveBitmapBackPath(bitmapAll);
             //保存图片到本地
             savePicLocal(path);
             Log.d(TAG, "最终生成的长图路径为：" + path);
@@ -275,7 +278,7 @@ public class LongPictureCreate extends View {
     }
 
     private void savePicLocal(String path) {
-        float imageRatio = com.xuexiang.Photale.utils.LongPictures.ImageUtil.getImageRatio(path);
+        float imageRatio = ImageUtil.getImageRatio(path);
         // 最终压缩后的长图宽度
         int finalCompressLongPictureWidth;
         if (imageRatio >= 10) {
