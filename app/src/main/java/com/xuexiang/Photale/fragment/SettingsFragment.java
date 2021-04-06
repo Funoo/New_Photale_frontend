@@ -19,6 +19,8 @@ package com.xuexiang.Photale.fragment;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.view.KeyEvent;
+import android.view.View;
 
 import com.xuexiang.Photale.R;
 import com.xuexiang.Photale.core.BaseFragment;
@@ -80,6 +82,28 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
         menuHelper.setOnSuperTextViewClickListener(this);
         menuChangeAccount.setOnSuperTextViewClickListener(this);
         menuLogout.setOnSuperTextViewClickListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getFocus();
+    }
+
+    //主界面获取焦点
+    private void getFocus() {
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (keyEvent.getAction() == KeyEvent.ACTION_UP && i == KeyEvent.KEYCODE_BACK) {
+                    getActivity().onBackPressed();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @SingleClick

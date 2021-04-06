@@ -78,6 +78,7 @@ public class TimeLineModel {
     }
 
     public int imageFileName;
+//    public String imageFileName;
     public String productName;
     public String productPrice;
     public String month;

@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -55,6 +56,7 @@ import com.xuexiang.Photale.core.BaseFragment;
 import com.xuexiang.Photale.utils.LongPictures.LongPictureCreate;
 import com.xuexiang.Photale.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
+import com.xuexiang.xui.utils.ThemeUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.button.shadowbutton.ShadowButton;
 
@@ -107,12 +109,17 @@ public class SmartAlbumFragment extends BaseFragment {
     }
 
 
-    @SuppressLint("ResourceAsColor")
     @Override
     protected TitleBar initTitle() {
         TitleBar titleBar = super.initTitle();
-        titleBar.setBackgroundColor(Color.parseColor("#62c2af"));
-
+        titleBar.setBackgroundResource(R.color.colorAccent);
+        titleBar.setActionTextColor(R.color.picture_color_transparent_white);
+        titleBar.addAction(new TitleBar.TextAction("保存并分享") {
+            @Override
+            public void performAction(View view) {
+                openNewPage(SettingsFragment.class);
+            }
+        });
         return titleBar;
     }
 
@@ -126,42 +133,32 @@ public class SmartAlbumFragment extends BaseFragment {
         return R.layout.fragment_smart_album;
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        FullyGridLayoutManager manager = new FullyGridLayoutManager(getContext(),
-//                4, GridLayoutManager.VERTICAL, false);
-//        recyclerView.setLayoutManager(manager);
-//        recyclerView.addItemDecoration(new GridSpacingItemDecoration(4,
-//                ScreenUtils.dip2px(getContext(), 8), false));
-//        mAdapter = new GridImageAdapter(getContext(), onAddPicClickListener);
-//        mAdapter.setSelectMax(maxSelectNum);
-//        recyclerView.setAdapter(mAdapter);
-//        mAdapter.setOnItemClickListener((v, position) -> {
-//            List<LocalMedia> selectList = mAdapter.getData();
-//            if (selectList.size() > 0) {
-//                LocalMedia media = selectList.get(position);
-//                String mimeType = media.getMimeType();
-//                int mediaType = PictureMimeType.getMimeType(mimeType);
-//                switch (mediaType) {
-//                    case PictureConfig.TYPE_VIDEO:
-//                        // 预览视频
-//                        PictureSelector.create(SmartAlbumFragment.this).externalPictureVideo(media.getPath());
-//                        break;
-//                    case PictureConfig.TYPE_AUDIO:
-//                        // 预览音频
-//                        PictureSelector.create(SmartAlbumFragment.this).externalPictureAudio(media.getPath());
-//                        break;
-//                    default:
-//                        PictureSelector.create(SmartAlbumFragment.this)
-//                                .setPictureStyle(mPictureParameterStyle)// 动态自定义相册主题
-//                                .isNotPreviewDownload(true)// 预览图片长按是否可以下载
-//                                .imageEngine(GlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
-//                                .openExternalPreview(position, selectList);
-//                        break;
-//                }
-//            }
-//        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getFocus();
+    }
+
+    //主界面获取焦点
+    private void getFocus() {
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (keyEvent.getAction() == KeyEvent.ACTION_UP && i == KeyEvent.KEYCODE_BACK) {
+                    getActivity().onBackPressed();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     public FragmentManager.FragmentLifecycleCallbacks getFragmentLifecycleCallbacks() {
@@ -183,158 +180,6 @@ public class SmartAlbumFragment extends BaseFragment {
     }
 
 
-//    private GridImageAdapter.onAddPicClickListener onAddPicClickListener = new GridImageAdapter.onAddPicClickListener() {
-//        @Override
-//        public void onAddPicClick() {
-//            boolean mode = true;
-//            if (mode) {
-//                // 进入相册 以下是例子：不需要的api可以不写
-//                PictureSelector.create(SmartAlbumFragment.this)
-//                        .openGallery(PictureMimeType.ofImage())
-//                        .setPictureStyle(mPictureParameterStyle)
-//                        .isEnableCrop(true)// 是否裁剪 true or false
-//                        .maxSelectNum(10)// 最大图片选择数量 int
-//                        .minSelectNum(1)// 最小选择数量 int
-//                        .hideBottomControls(false)
-//                        .imageSpanCount(4)// 每行显示个数 int
-//                        .loadImageEngine(GlideEngine.createGlideEngine())
-//                        .selectionMode(PictureConfig.MULTIPLE)
-//                        .isCamera(true)
-//                        .selectionData(mSelectList)
-//                        .selectionData(mAdapter.getData())// 是否传入已选图片
-//                        .forResult(new SmartAlbumFragment.MyResultCallback(mAdapter));
-//                //.forResult(REQUEST_CODE_CHOOSE);结果回调onActivityResult code
-//            } else {
-//                // 单独拍照
-//                PictureSelector.create(SmartAlbumFragment.this)
-//                        .openCamera(chooseMode)// 单独拍照，也可录像或也可音频 看你传入的类型是图片or视频
-//                        .setPictureStyle(mPictureParameterStyle)
-//                        .imageEngine(GlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
-//                        .setPictureCropStyle(mCropParameterStyle)// 动态自定义裁剪主题
-//                        .maxSelectNum(10)// 最大图片选择数量
-//                        .minSelectNum(1)// 最小选择数量
-////                        .loadCacheResourcesCallback(GlideCacheEngine.createCacheEngine())// 获取图片资源缓存，主要是解决华为10部分机型在拷贝文件过多时会出现卡的问题，这里可以判断只在会出现一直转圈问题机型上使用
-//                        .compressQuality(60)// 图片压缩后输出质量
-//                        .glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
-//                        .selectionData(mAdapter.getData())// 是否传入已选图片
-//                        .isPreviewEggs(false)//预览图片时 是否增强左右滑动图片体验(图片滑动一半即可看到上一张是否选中)
-//                        .cutOutQuality(90)// 裁剪输出质量 默认100
-//                        .selectionData(mSelectList)
-//                        .selectionData(mAdapter.getData())// 是否传入已选图片
-//                        .minimumCompressSize(100)// 小于100kb的图片不压缩
-//                        .forResult(new SmartAlbumFragment.MyResultCallback(mAdapter));
-//            }
-//        }
-//
-//    };
-
-
-//    @OnClick(R.id.generateLongPic)
-//    public void generateLongImages() {
-//        System.out.println("------------------------Into generateLongImages-------------------");
-//        System.out.println(mCurrentSelectedPath.size());
-//        if (mCurrentSelectedPath.size() <1 ) {
-//            XToastUtils.toast("请选择图片");
-//            return;
-//        }
-//        Glide.with(this).asBitmap().load("https://source.unsplash.com/random").into(new SimpleTarget<Bitmap>() {
-//            @Override
-//            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-//
-//                drawLongPictureUtil.setButtomBitmap(resource);
-//                drawLongPictureUtil.setData(mCurrentSelectedPath);
-//                drawLongPictureUtil.startDraw();
-//            }
-//        });
-//        if (TextUtils.isEmpty(resultPath)) {
-//            XToastUtils.toast("暂无长图");
-//            return;
-//        }
-//        ImagePreview
-//                .getInstance()
-//                .setContext(getContext())
-//                .setIndex(0)
-//                .setImage(resultPath)
-//                .start();
-//    }
-
-
-//    /**
-//     * 返回结果回调
-//     */
-//    private static class MyResultCallback implements OnResultCallbackListener<LocalMedia> {
-//        private WeakReference<GridImageAdapter> mAdapterWeakReference;
-//
-//        public MyResultCallback(GridImageAdapter adapter) {
-//            super();
-//            this.mAdapterWeakReference = new WeakReference<>(adapter);
-//        }
-//
-//        @Override
-//        public void onResult(List<LocalMedia> result) {
-//            for (LocalMedia media : result) {
-//                Log.i(INFO, "是否压缩:" + media.isCompressed());
-//                Log.i(INFO, "压缩:" + media.getCompressPath());
-//                Log.i(INFO, "原图:" + media.getPath());
-//                Log.i(INFO, "绝对路径:" + media.getRealPath());
-//                Log.i(INFO, "是否裁剪:" + media.isCut());
-//                Log.i(INFO, "裁剪:" + media.getCutPath());
-//                Log.i(INFO, "是否开启原图:" + media.isOriginal());
-//                Log.i(INFO, "原图路径:" + media.getOriginalPath());
-//                Log.i(INFO, "Android Q 特有Path:" + media.getAndroidQToPath());
-//                Log.i(INFO, "宽高: " + media.getWidth() + "x" + media.getHeight());
-//                Log.i(INFO, "Size: " + media.getSize());
-//                // TODO 可以通过PictureSelectorExternalUtils.getExifInterface();方法获取一些额外的资源信息，如旋转角度、经纬度等信息
-//            }
-//            if (mAdapterWeakReference.get() != null) {
-//                mAdapterWeakReference.get().setList(result);
-//                mAdapterWeakReference.get().notifyDataSetChanged();
-//            }
-//        }
-//
-//        @Override
-//        public void onCancel() {
-//            Log.i(INFO, "PictureSelector Cancel");
-//        }
-//    }
-
-//
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        System.out.println("------------------------------step in onActivityResult------------------");
-//        if (resultCode == RESULT_OK) {
-//            System.out.println("------------------------------step in resultCode == RESULT_OK------------------");
-//            switch (requestCode) {
-//                case PictureConfig.CHOOSE_REQUEST:
-//                    // 图片选择结果回调
-//                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
-//                    // 例如 LocalMedia 里面返回五种path
-//                    // 1.media.getPath(); 为原图path
-//                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
-//                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
-//                    // 4.media.getOriginalPath()); media.isOriginal());为true时此字段才有值
-//                    // 5.media.getAndroidQToPath();为Android Q版本特有返回的字段，此字段有值就用来做上传使用
-//                    // 如果同时开启裁剪和压缩，则取压缩路径为准因为是先裁剪后压缩
-//                    for (LocalMedia media : selectList) {
-//                        Log.i(INFO, "是否压缩:" + media.isCompressed());
-//                        Log.i(INFO, "压缩:" + media.getCompressPath());
-//                        Log.i(INFO, "原图:" + media.getPath());
-//                        Log.i(INFO, "绝对路径:" + media.getRealPath());
-//                        Log.i(INFO, "是否裁剪:" + media.isCut());
-//                        Log.i(INFO, "裁剪:" + media.getCutPath());
-//                        Log.i(INFO, "是否开启原图:" + media.isOriginal());
-//                        Log.i(INFO, "原图路径:" + media.getOriginalPath());
-//                        Log.i(INFO, "Android Q 特有Path:" + media.getAndroidQToPath());
-//                    }
-//                    mAdapter.setList(selectList);
-//                    mAdapter.notifyDataSetChanged();
-//                    break;
-//            }
-//        }
-//    }
-
 
 
     /**
@@ -353,63 +198,7 @@ public class SmartAlbumFragment extends BaseFragment {
         }
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        switch (requestCode) {
-//            case PictureConfig.APPLY_STORAGE_PERMISSIONS_CODE:
-//                // 存储权限
-//                for (int i = 0; i < grantResults.length; i++) {
-//                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-//                        PictureFileUtils.deleteCacheDirFile(getContext(), PictureMimeType.ofImage());
-//                    } else {
-//                        Toast.makeText(getContext(),
-//                                getString(R.string.picture_jurisdiction), Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//                break;
-//        }
-//    }
 
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        if (mAdapter != null) {
-//            outState.putParcelableArrayList("selectorList",
-//                    (ArrayList<? extends Parcelable>) mAdapter.getData());
-//        }
-//    }
-//
-//    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            String action = intent.getAction();
-//            if (TextUtils.isEmpty(action)) {
-//                return;
-//            }
-//            if (BroadcastAction.ACTION_DELETE_PREVIEW_POSITION.equals(action)) {// 外部预览删除按钮回调
-//                Bundle extras = intent.getExtras();
-//                if (extras != null) {
-//                    int position = extras.getInt(PictureConfig.EXTRA_PREVIEW_DELETE_POSITION);
-//                    ToastUtils.s(context, "delete image index:" + position);
-//                    mAdapter.remove(position);
-//                    mAdapter.notifyItemRemoved(position);
-//                }
-//            }
-//        }
-//    };
-//
-//
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        if (broadcastReceiver != null) {
-//            if (getContext() != null) {
-//                BroadcastManager.getInstance(getContext()).unregisterReceiver(broadcastReceiver,
-//                        BroadcastAction.ACTION_DELETE_PREVIEW_POSITION);
-//            }
-//        }
-//    }
 
     private void getDefaultStyle() {
         // 相册主题

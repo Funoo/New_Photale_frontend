@@ -29,13 +29,10 @@ import com.luck.picture.lib.style.PictureCropParameterStyle;
 import com.luck.picture.lib.style.PictureParameterStyle;
 import com.xuexiang.Photale.R;
 import com.xuexiang.Photale.activity.SmartAlbumActivity;
-import com.xuexiang.Photale.activity.TestActivity;
-import com.xuexiang.Photale.activity.TestActivity2;
 import com.xuexiang.Photale.components.LongPictureStyle.GlideEngine;
 import com.xuexiang.Photale.components.PictureSelectorFragment;
 import com.xuexiang.Photale.core.BaseFragment;
 import com.xuexiang.Photale.fragment.Dairy.DairyFragment;
-import com.xuexiang.Photale.fragment.SmartAlbumFragment;
 import com.xuexiang.Photale.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
@@ -154,8 +151,7 @@ public class mainPagefragment extends BaseFragment implements BaseBanner.OnItemC
      */
     @OnClick(R.id.autoAdjust)
     public void onAutoAdjustViewClicked() {
-        ActivityUtils.startActivity(TestActivity2.class);
-//        openPage(TestActivity.class);
+        ActivityUtils.startActivity(SmartAlbumActivity.class);
 //        openPage(SmartAlbumFragment.class);
     }
 

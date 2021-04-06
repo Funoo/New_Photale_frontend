@@ -64,8 +64,8 @@ public class TimeLineActivity extends BaseActivity {
         rvList.add(timeLineDummmy5);
         TimeLineModel timeLineDummmy6 = new TimeLineModel(2,R.drawable.bg,"One Plus", "Rs 45000.00","FEB","2018");
         rvList.add(timeLineDummmy6);
-        TimeLineModel timeLineDummmy7 = new TimeLineModel(3,R.drawable.bg,"Iphone", "Rs 88500.00","MAY","2006");
-        rvList.add(timeLineDummmy7);
+//        TimeLineModel timeLineDummmy7 = new TimeLineModel(3,"http://121.5.152.42/images/bg_girl.png","Iphone", "Rs 88500.00","MAY","2006");
+//        rvList.add(timeLineDummmy7);
         timeLineAdapter.notifyDataSetChanged();
     }
 

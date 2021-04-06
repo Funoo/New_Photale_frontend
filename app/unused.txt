@@ -19145,7 +19145,7 @@ com.xuexiang.xui.widget.actionbar.TitleUtils$1:
     void <init>(android.app.Activity)
 kotlin.collections.AbstractList:
     public abstract int getSize()
-com.xuexiang.Photale.activity.TestActivity2:
+com.xuexiang.Photale.activity.SmartAlbumActivity:
     private void clearCache()
     private static final java.lang.String TAG
     private static final int CONTENT_VIEW_ID
@@ -20033,8 +20033,8 @@ org.aspectj.runtime.reflect.MethodSignatureImpl:
     private java.lang.reflect.Method search(java.lang.Class,java.lang.String,java.lang.Class[],java.util.Set)
     public java.lang.reflect.Method getMethod()
     private java.lang.reflect.Method method
-com.xuexiang.Photale.activity.TestActivity2$6:
-    void <init>(com.xuexiang.Photale.activity.TestActivity2)
+com.xuexiang.Photale.activity.SmartAlbumActivity$6:
+    void <init>(com.xuexiang.Photale.activity.SmartAlbumActivity)
 com.bumptech.glide.gifdecoder.StandardGifDecoder:
     public void <init>(com.bumptech.glide.gifdecoder.GifDecoder$BitmapProvider,com.bumptech.glide.gifdecoder.GifHeader,java.nio.ByteBuffer)
     private com.bumptech.glide.gifdecoder.GifHeaderParser getHeaderParser()
@@ -23640,8 +23640,8 @@ kotlin.time.Duration:
     private static final double ZERO
     private static final double INFINITE
     public static final kotlin.time.Duration$Companion Companion
-com.xuexiang.Photale.activity.TestActivity2$1:
-    final synthetic com.xuexiang.Photale.activity.TestActivity2 this$0
+com.xuexiang.Photale.activity.SmartAlbumActivity$1:
+    final synthetic com.xuexiang.Photale.activity.SmartAlbumActivity this$0
 com.xuexiang.xupdate._XUpdate:
     private static boolean sIsShowUpdatePrompter
 com.xuexiang.xpage.base.XPageFragment:
@@ -23836,9 +23836,9 @@ io.reactivex.internal.operators.completable.CompletableNever:
     public static final io.reactivex.Completable INSTANCE
 io.reactivex.observers.BaseTestConsumer:
     protected java.lang.Thread lastThread
-com.xuexiang.Photale.activity.TestActivity2:
-    static synthetic com.luck.picture.lib.style.PictureCropParameterStyle access$500(com.xuexiang.Photale.activity.TestActivity2)
-    static synthetic int access$600(com.xuexiang.Photale.activity.TestActivity2)
+com.xuexiang.Photale.activity.SmartAlbumActivity:
+    static synthetic com.luck.picture.lib.style.PictureCropParameterStyle access$500(com.xuexiang.Photale.activity.SmartAlbumActivity)
+    static synthetic int access$600(com.xuexiang.Photale.activity.SmartAlbumActivity)
     private int REQUEST_CODE_CHOOSE
     private com.luck.picture.lib.style.PictureCropParameterStyle mCropParameterStyle
     private androidx.fragment.app.FragmentManager$FragmentLifecycleCallbacks mFragmentLifecycleCallbacks

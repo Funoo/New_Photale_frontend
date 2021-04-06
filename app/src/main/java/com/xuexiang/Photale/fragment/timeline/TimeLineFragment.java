@@ -17,6 +17,9 @@
 
 package com.xuexiang.Photale.fragment.timeline;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -38,6 +41,12 @@ import com.xuexiang.Photale.activity.timeline.TimeLineActivity;
 import com.xuexiang.Photale.activity.timeline.TimeLineModel;
 
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -51,6 +60,7 @@ public class TimeLineFragment extends BaseFragment {
     RecyclerView rv;
     TimeLineFragment.TimeLineAdapter timeLineAdapter;
     private static ArrayList<TimeLineModel> rvList = new ArrayList<>();
+
 
     @Override
     protected int getLayoutId() {
@@ -118,6 +128,35 @@ public class TimeLineFragment extends BaseFragment {
 //        rv.setAdapter(timeLineAdapter);
 //    }
 
+
+    public Bitmap getBitmapFromUrl(String urlString) {
+        Bitmap bitmap;
+        InputStream is = null;
+
+        try {
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            is = new BufferedInputStream(connection.getInputStream());
+            bitmap = BitmapFactory.decodeStream(is);
+            connection.disconnect();
+            //Log.i("image", "getBitmapFromUrl: true");
+            return bitmap;
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+
     public class TimeLineAdapter extends RecyclerView.Adapter {
         private static final int VIEW_TYPE_DEAL_FIRST_ITEM = 1;
         private static final int VIEW_TYPE_DEAL_MIDDLE_ITEM = 2;
@@ -125,6 +164,38 @@ public class TimeLineFragment extends BaseFragment {
 
         private Context mContext;
         private ArrayList<TimeLineModel> mDealsList;
+
+        private class MyTask extends AsyncTask<String,String,Bitmap>
+        {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected Bitmap doInBackground(String... strings) {
+                System.out.println("in doInBackground and strings[0] is " + strings[0]);
+                publishProgress();
+                return getBitmapFromUrl(strings[0]);
+            }
+
+            @Override
+            protected void onProgressUpdate(String... values) {
+                super.onProgressUpdate(values);
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                super.onPostExecute(bitmap);
+            }
+
+            @Override
+            protected void onCancelled() {
+                super.onCancelled();
+            }
+        }
+
         public TimeLineAdapter(Context context, ArrayList<TimeLineModel> mDealsListData) {
             mContext = context;
             mDealsList = mDealsListData;
@@ -193,6 +264,8 @@ public class TimeLineFragment extends BaseFragment {
             void bind(TimeLineModel dealsModel) {
                 monthPurchased.setText(dealsModel.month);
                 yearPurchased.setText(dealsModel.year);
+//                dealProductImage.setImageBitmap(null);
+//                new MyTask().execute(dealsModel.imageFileName);
                 dealProductImage.setImageResource(dealsModel.imageFileName);
                 productName.setText(dealsModel.productName);
                 productPrice.setText(dealsModel.productPrice);
@@ -212,6 +285,8 @@ public class TimeLineFragment extends BaseFragment {
             void bind(TimeLineModel dealsModel) {
                 monthPurchased.setText(dealsModel.month);
                 yearPurchased.setText(dealsModel.year);
+//                dealProductImage.setImageBitmap(null);
+//                new MyTask().execute(dealsModel.imageFileName);
                 dealProductImage.setImageResource(dealsModel.imageFileName);
                 productName.setText(dealsModel.productName);
                 productPrice.setText(dealsModel.productPrice);
@@ -233,6 +308,8 @@ public class TimeLineFragment extends BaseFragment {
                 monthPurchased.setText(dealsModel.month);
                 yearPurchased.setText(dealsModel.year);
                 dealProductImage.setImageResource(dealsModel.imageFileName);
+//                dealProductImage.setImageBitmap(null);
+//                new MyTask().execute(dealsModel.imageFileName);
                 productName.setText(dealsModel.productName);
                 productPrice.setText(dealsModel.productPrice);
             }

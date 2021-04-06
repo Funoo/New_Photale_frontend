@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +59,7 @@ import com.luck.picture.lib.tools.ToastUtils;
 import com.xuexiang.Photale.adapter.GridImageAdapter;
 import com.xuexiang.Photale.components.LongPictureStyle.GlideEngine;
 import com.xuexiang.Photale.core.BaseFragment;
+import com.xuexiang.Photale.fragment.SettingsFragment;
 import com.xuexiang.Photale.utils.LongPictures.LongPictureCreate;
 import com.xuexiang.Photale.utils.Utils;
 import com.xuexiang.Photale.utils.XToastUtils;
@@ -133,12 +135,18 @@ public class PictureSelectorFragment extends BaseFragment {
         }
     }
 
-    @SuppressLint("ResourceAsColor")
     @Override
     protected TitleBar initTitle() {
-        TitleBar titleBar = super.initTitle();
-        titleBar.setBackgroundColor(Color.parseColor("#62c2af"));
-
+        TitleBar titleBar = super.initTitle()
+                .setImmersive(true);
+        titleBar.setBackgroundResource(R.color.colorAccent);
+        titleBar.setActionTextColor(R.color.picture_color_transparent_white);
+        titleBar.addAction(new TitleBar.TextAction("保存并分享") {
+            @Override
+            public void performAction(View view) {
+                openPage(SettingsFragment.class);
+            }
+        });
         return titleBar;
     }
 
@@ -209,19 +217,27 @@ public class PictureSelectorFragment extends BaseFragment {
         myarticle.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getFocus();
+    }
 
-
-//    public void initClicked() {
-//        Utils.getPictureSelector(this)
-//                .selectionMedia(mSelectList)
-//                .forResult(PictureConfig.CHOOSE_REQUEST);
-//        System.out.println("--------step in click status---------------");
-//    }
-//
-//    @OnClick(R.id.button_no_camera)
-//    public void onViewClicked() {
-//        initClicked();
-//    }
+    //主界面获取焦点
+    private void getFocus() {
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (keyEvent.getAction() == KeyEvent.ACTION_UP && i == KeyEvent.KEYCODE_BACK) {
+                    getActivity().onBackPressed();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
 
 
     private GridImageAdapter.onAddPicClickListener onAddPicClickListener = new GridImageAdapter.onAddPicClickListener() {

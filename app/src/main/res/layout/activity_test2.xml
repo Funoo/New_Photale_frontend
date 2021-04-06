@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.TestActivity2">
+    tools:context=".activity.SmartAlbumActivity">
     <fragment
         android:id="@+id/smart_album_fragment"
         android:name="com.xuexiang.Photale.fragment.SmartAlbumFragment"
