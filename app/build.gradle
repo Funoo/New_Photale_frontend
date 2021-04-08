@@ -147,6 +147,8 @@ dependencies {
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.8'
     implementation 'com.github.SherlockGougou:BigImageViewPager:androidx-6.0.1'
 
+    implementation 'com.google.zxing:core:3.4.1'
+
 }
 //自动添加X-Library依赖
 apply from: 'x-library.gradle'

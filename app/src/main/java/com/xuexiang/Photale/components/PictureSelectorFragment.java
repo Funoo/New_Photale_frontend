@@ -56,6 +56,8 @@ import com.luck.picture.lib.style.PictureParameterStyle;
 import com.luck.picture.lib.tools.PictureFileUtils;
 import com.luck.picture.lib.tools.ScreenUtils;
 import com.luck.picture.lib.tools.ToastUtils;
+import com.xuexiang.Photale.activity.Dynamic.DynamicSampleActivity;
+import com.xuexiang.Photale.activity.SmartAlbumActivity;
 import com.xuexiang.Photale.adapter.GridImageAdapter;
 import com.xuexiang.Photale.components.LongPictureStyle.GlideEngine;
 import com.xuexiang.Photale.core.BaseFragment;
@@ -74,6 +76,7 @@ import com.xuexiang.xui.widget.button.roundbutton.RoundButton;
 import com.xuexiang.xui.widget.edittext.MultiLineEditText;
 import com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText;
 import com.xuexiang.xui.widget.flowlayout.FlowTagLayout;
+import com.xuexiang.xutil.app.ActivityUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -104,6 +107,8 @@ public class PictureSelectorFragment extends BaseFragment {
 
     private String tagString;
 
+    private String article;
+
     private int tagListNum = 0;
 
     private int maxSelectNum = 12;
@@ -125,6 +130,12 @@ public class PictureSelectorFragment extends BaseFragment {
     private final static String INFO = PictureSelectorFragment.class.getSimpleName();
 
 
+    public static final String SELECT_PICS_INFO = "com.xuexiang.Photale.components.PictureSelector.PICSMESSAGE";
+
+    public static final String SELECT_TAG_INFO = "com.xuexiang.Photale.components.PictureSelector.TAG";
+
+    public static final String SELECT_ARTICLE_INFO = "com.xuexiang.Photale.components.PictureSelector.ARTICLE";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,10 +155,26 @@ public class PictureSelectorFragment extends BaseFragment {
         titleBar.addAction(new TitleBar.TextAction("保存并分享") {
             @Override
             public void performAction(View view) {
-                openPage(SettingsFragment.class);
+                updateDetail();
             }
         });
         return titleBar;
+    }
+
+    public void updateDetail() {
+        System.out.println("mAdapter.getData() size is " + mAdapter.getData().size());
+        System.out.println("mAdapter.getData() is " + mAdapter.getData().get(0).getPath());
+        ArrayList<String> piclist = new ArrayList<>();
+        int i;
+        for (i = 0; i < mAdapter.getData().size(); i++){
+            piclist.add(i,mAdapter.getData().get(i).getPath());
+        }
+        System.out.println("piclist is " + piclist);
+        Intent intent = new Intent(getActivity(), DynamicSampleActivity.class);
+        intent.putStringArrayListExtra(SELECT_PICS_INFO, piclist);
+        intent.putStringArrayListExtra(SELECT_TAG_INFO, (ArrayList<String>) tagInfo);
+        intent.putExtra(SELECT_ARTICLE_INFO,article);
+        startActivity(intent);
     }
 
     /**
@@ -393,10 +420,12 @@ public class PictureSelectorFragment extends BaseFragment {
         if (generateText.getText().toString().equals("生成文案")){
             myarticle.setVisibility(View.VISIBLE);
             myarticle.setContentText("      我们要学会珍惜我们生活的每一天，因为，这每一天的开始，都将是我们余下生命之中的第一天。除非我们即将死去。");
+            article = myarticle.getContentText();
             generateText.setText("换个文案");
         }else {
             myarticle.setVisibility(View.VISIBLE);
             myarticle.setContentText("      也许每一个男子全都有过这样的两个女人，至少两个。娶了红玫瑰，久而久之，红的变了墙上的一抹蚊子血，白的还是“床前明月光”；娶了白玫瑰，白的便是衣服上的一粒饭粘子，红的却是心口上的一颗朱砂痣。");
+            article = myarticle.getContentText();
         }
     }
 
