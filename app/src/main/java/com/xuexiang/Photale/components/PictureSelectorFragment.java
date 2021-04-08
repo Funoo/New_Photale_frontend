@@ -61,25 +61,35 @@ import com.xuexiang.Photale.activity.SmartAlbumActivity;
 import com.xuexiang.Photale.adapter.GridImageAdapter;
 import com.xuexiang.Photale.components.LongPictureStyle.GlideEngine;
 import com.xuexiang.Photale.core.BaseFragment;
-import com.xuexiang.Photale.fragment.SettingsFragment;
-import com.xuexiang.Photale.utils.LongPictures.LongPictureCreate;
-import com.xuexiang.Photale.utils.Utils;
+import com.xuexiang.Photale.utils.OkHttpUtil;
 import com.xuexiang.Photale.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.xuexiang.Photale.R;
 import com.xuexiang.xui.widget.button.roundbutton.RoundButton;
 import com.xuexiang.xui.widget.edittext.MultiLineEditText;
 import com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText;
 import com.xuexiang.xui.widget.flowlayout.FlowTagLayout;
-import com.xuexiang.xutil.app.ActivityUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.MultipartBody;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static android.app.Activity.RESULT_OK;
 import static com.xuexiang.xutil.XUtil.runOnUiThread;
@@ -337,6 +347,13 @@ public class PictureSelectorFragment extends BaseFragment {
                 Log.i(INFO, "Android Q 特有Path:" + media.getAndroidQToPath());
                 Log.i(INFO, "宽高: " + media.getWidth() + "x" + media.getHeight());
                 Log.i(INFO, "Size: " + media.getSize());
+
+                File file = new File(media.getAndroidQToPath());
+                try {
+                    OkHttpUtil.imageUpload(file);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 // TODO 可以通过PictureSelectorExternalUtils.getExifInterface();方法获取一些额外的资源信息，如旋转角度、经纬度等信息
             }
             if (mAdapterWeakReference.get() != null) {
@@ -417,16 +434,70 @@ public class PictureSelectorFragment extends BaseFragment {
 
     @OnClick(R.id.generateText)
     public void onGenerateClicked() {
-        if (generateText.getText().toString().equals("生成文案")){
-            myarticle.setVisibility(View.VISIBLE);
-            myarticle.setContentText("      我们要学会珍惜我们生活的每一天，因为，这每一天的开始，都将是我们余下生命之中的第一天。除非我们即将死去。");
-            article = myarticle.getContentText();
-            generateText.setText("换个文案");
-        }else {
-            myarticle.setVisibility(View.VISIBLE);
-            myarticle.setContentText("      也许每一个男子全都有过这样的两个女人，至少两个。娶了红玫瑰，久而久之，红的变了墙上的一抹蚊子血，白的还是“床前明月光”；娶了白玫瑰，白的便是衣服上的一粒饭粘子，红的却是心口上的一颗朱砂痣。");
-            article = myarticle.getContentText();
+//        if (generateText.getText().toString().equals("生成文案")){
+//            myarticle.setVisibility(View.VISIBLE);
+//            myarticle.setContentText("      我们要学会珍惜我们生活的每一天，因为，这每一天的开始，都将是我们余下生命之中的第一天。除非我们即将死去。");
+//            article = myarticle.getContentText();
+//            generateText.setText("换个文案");
+//        }else {
+//            myarticle.setVisibility(View.VISIBLE);
+//            myarticle.setContentText("      也许每一个男子全都有过这样的两个女人，至少两个。娶了红玫瑰，久而久之，红的变了墙上的一抹蚊子血，白的还是“床前明月光”；娶了白玫瑰，白的便是衣服上的一粒饭粘子，红的却是心口上的一颗朱砂痣。");
+//            article = myarticle.getContentText();
+//        }
+        List<LocalMedia> list = mAdapter.getData();
+        List<String> imageList = new ArrayList<>();
+        for (LocalMedia media: list) {
+            String[] strings = media.getAndroidQToPath().split("/");
+            imageList.add(strings[strings.length - 1]);
         }
+        Map<String, Object> map = new HashMap<>();
+        map.put("images", imageList);
+        map.put("multi_flag", 0);
+        JSONObject jsonObject = new JSONObject(map);
+        try {
+            sendCaptionRequest(jsonObject.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendCaptionRequest(String json) {
+        new Thread() {
+            @Override
+            public void run() {
+                //设置为自己的ip地址
+                Request request = new Request.Builder()
+                        .url("http://10.0.2.2:5000/caption")
+                        .post(RequestBody.create(OkHttpUtil.MEDIA_TYPE_JSON, json))
+                        .build();
+                try (Response response = OkHttpUtil.client.newCall(request).execute()) {
+                    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    JSONArray captions = jsonObject.getJSONArray("captions");
+                    int length = captions.length();
+                    StringBuffer stringBuffer = new StringBuffer();
+                    for (int i = 0; i < length; i++) {
+                        stringBuffer.append(captions.getString(i)).append("\n");
+                    }
+                    showCaption(stringBuffer.toString());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
+    private void showCaption(String caption) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                myarticle.setVisibility(View.VISIBLE);
+                myarticle.setContentText(caption);
+                article = myarticle.getContentText();
+            }
+        });
     }
 
     /**

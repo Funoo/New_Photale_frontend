@@ -149,6 +149,7 @@ dependencies {
 
     implementation 'com.google.zxing:core:3.4.1'
 
+    implementation 'com.squareup.okhttp3:okhttp:4.1.0'
 }
 //自动添加X-Library依赖
 apply from: 'x-library.gradle'
