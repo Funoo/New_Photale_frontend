@@ -1,0 +1,11 @@
+activity类：
+包括：
+图片选择并展示的PictureSelectorActivity
+智能排版模块的SmartAlbumActivity
+主界面ViewPager的HomePageActivity
+主界面的MainActivity
+图片编辑类的PictureCropActivity
+登录模块的LoginActivity
+启动页的SplashActivity
+生成分享海报有关的Dynamic文件夹，包括DynamicSampleActivity和工具类DynamicShareViewTool
+生成时间轴的timeline文件夹，包括TimeLineActivity和模板类TimeLineModel

@@ -1,0 +1,10 @@
+fragment类：
+包括：
+Dairy文件夹，其中有我的日志DairyFragment。
+homePage文件夹，其中有主页面HomeFragment。
+mainPage文件夹，其中有主页面中的ViewPager首页mainPagefragment。
+timeline文件夹，其中有时间线页面TimeLineFragment。
+关于页面AboutFragment。
+登录页面LoginFragment。
+我的页面SettingsFragment。
+智能排版页面SmartAlbumFragment。

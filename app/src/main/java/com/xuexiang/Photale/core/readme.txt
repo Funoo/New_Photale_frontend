@@ -1,0 +1,1 @@
+与工程有关的核心类，主要与Activity、Fragment以及网络有关。

@@ -1,0 +1,9 @@
+组件类
+包括：
+library是生成分享图片的规则类、工具类和二维码生成类等，此部分实现分为分享图片上半部分实现部分和下半部分实现部分。
+LongPictureStyle是生成长图有关方法的文件夹。
+tabbar是tabbar组件的文件夹。
+BannerFragment是轮播条组件。
+FullyGridLayoutManager是自定义的GridLayoutManager。
+ImageViewInfo与NineGridInfo是与图片展示有关。
+PictureSelectorFragment是生成文案模块，因为其具有复用性，所以暂且将它放在这里。
