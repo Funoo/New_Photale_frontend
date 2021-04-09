@@ -146,6 +146,8 @@ public class PictureSelectorFragment extends BaseFragment {
 
     public static final String SELECT_ARTICLE_INFO = "com.xuexiang.Photale.components.PictureSelector.ARTICLE";
 
+    public static List<String> mCaptions = new ArrayList<>();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -434,31 +436,31 @@ public class PictureSelectorFragment extends BaseFragment {
 
     @OnClick(R.id.generateText)
     public void onGenerateClicked() {
-//        if (generateText.getText().toString().equals("生成文案")){
-//            myarticle.setVisibility(View.VISIBLE);
-//            myarticle.setContentText("      我们要学会珍惜我们生活的每一天，因为，这每一天的开始，都将是我们余下生命之中的第一天。除非我们即将死去。");
-//            article = myarticle.getContentText();
-//            generateText.setText("换个文案");
-//        }else {
-//            myarticle.setVisibility(View.VISIBLE);
-//            myarticle.setContentText("      也许每一个男子全都有过这样的两个女人，至少两个。娶了红玫瑰，久而久之，红的变了墙上的一抹蚊子血，白的还是“床前明月光”；娶了白玫瑰，白的便是衣服上的一粒饭粘子，红的却是心口上的一颗朱砂痣。");
-//            article = myarticle.getContentText();
-//        }
-        List<LocalMedia> list = mAdapter.getData();
-        List<String> imageList = new ArrayList<>();
-        for (LocalMedia media: list) {
-            String[] strings = media.getAndroidQToPath().split("/");
-            imageList.add(strings[strings.length - 1]);
+        if (generateText.getText().toString().equals("生成文案")){
+            List<LocalMedia> list = mAdapter.getData();
+            List<String> imageList = new ArrayList<>();
+            for (LocalMedia media: list) {
+                String[] strings = media.getAndroidQToPath().split("/");
+                imageList.add(strings[strings.length - 1]);
+            }
+            Map<String, Object> map = new HashMap<>();
+            map.put("images", imageList);
+            map.put("multi_flag", 0);
+            JSONObject jsonObject = new JSONObject(map);
+            try {
+                sendCaptionRequest(jsonObject.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else {
+            myarticle.setVisibility(View.VISIBLE);
+            if (article.equals(mCaptions.get(0)))
+                myarticle.setContentText(mCaptions.get(1));
+            else
+                myarticle.setContentText(mCaptions.get(0));
+            article = myarticle.getContentText();
         }
-        Map<String, Object> map = new HashMap<>();
-        map.put("images", imageList);
-        map.put("multi_flag", 0);
-        JSONObject jsonObject = new JSONObject(map);
-        try {
-            sendCaptionRequest(jsonObject.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
     private void sendCaptionRequest(String json) {
@@ -480,8 +482,10 @@ public class PictureSelectorFragment extends BaseFragment {
                     for (int i = 0; i < length; i++) {
                         stringBuffer.append(captions.getString(i)).append("\n");
                     }
+                    PictureSelectorFragment.mCaptions.clear();
+                    PictureSelectorFragment.mCaptions.add(stringBuffer.toString());
+                    PictureSelectorFragment.mCaptions.add(jsonObject.getString("all_in_one_cap"));
                     showCaption(stringBuffer.toString());
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -496,6 +500,7 @@ public class PictureSelectorFragment extends BaseFragment {
                 myarticle.setVisibility(View.VISIBLE);
                 myarticle.setContentText(caption);
                 article = myarticle.getContentText();
+                generateText.setText("换个文案");
             }
         });
     }
