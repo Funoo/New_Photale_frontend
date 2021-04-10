@@ -73,6 +73,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import com.xuexiang.Photale.R;
 import com.xuexiang.xui.widget.button.roundbutton.RoundButton;
@@ -80,12 +81,15 @@ import com.xuexiang.xui.widget.edittext.MultiLineEditText;
 import com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText;
 import com.xuexiang.xui.widget.flowlayout.FlowTagLayout;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -445,7 +449,6 @@ public class PictureSelectorFragment extends BaseFragment {
             }
             Map<String, Object> map = new HashMap<>();
             map.put("images", imageList);
-            map.put("multi_flag", 0);
             JSONObject jsonObject = new JSONObject(map);
             try {
                 sendCaptionRequest(jsonObject.toString());
@@ -469,26 +472,36 @@ public class PictureSelectorFragment extends BaseFragment {
             public void run() {
                 //设置为自己的ip地址
                 Request request = new Request.Builder()
-                        .url("http://10.0.2.2:5000/caption")
+                        .url("http://159.75.80.210/caption")
                         .post(RequestBody.create(OkHttpUtil.MEDIA_TYPE_JSON, json))
                         .build();
-                try (Response response = OkHttpUtil.client.newCall(request).execute()) {
-                    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-                    JSONObject jsonObject = new JSONObject(response.body().string());
-                    JSONArray captions = jsonObject.getJSONArray("captions");
-                    int length = captions.length();
-                    StringBuffer stringBuffer = new StringBuffer();
-                    for (int i = 0; i < length; i++) {
-                        stringBuffer.append(captions.getString(i)).append("\n");
+                Call call = OkHttpUtil.client.newCall(request);
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        Log.e(PictureSelectorFragment.class.getName(),e.getMessage());
                     }
-                    PictureSelectorFragment.mCaptions.clear();
-                    PictureSelectorFragment.mCaptions.add(stringBuffer.toString());
-                    PictureSelectorFragment.mCaptions.add(jsonObject.getString("all_in_one_cap"));
-                    showCaption(stringBuffer.toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response.body().string());
+                            JSONArray captions = jsonObject.getJSONArray("captions");
+                            int length = captions.length();
+                            StringBuffer stringBuffer = new StringBuffer();
+                            for (int i = 0; i < length; i++) {
+                                stringBuffer.append(captions.getString(i)).append("\n");
+                            }
+                            PictureSelectorFragment.mCaptions.clear();
+                            PictureSelectorFragment.mCaptions.add(stringBuffer.toString());
+                            PictureSelectorFragment.mCaptions.add(jsonObject.getString("all_in_one_cap"));
+                            showCaption(stringBuffer.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
         }.start();
     }

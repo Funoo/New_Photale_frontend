@@ -19,9 +19,16 @@ package com.xuexiang.Photale.utils;
 
 import android.util.Log;
 
+import com.xuexiang.Photale.components.PictureSelectorFragment;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -32,7 +39,10 @@ import okhttp3.Response;
 
 public class OkHttpUtil {
 
-    public static final OkHttpClient client = new OkHttpClient();
+    public static final OkHttpClient client = new OkHttpClient.Builder()
+            .connectTimeout(40, TimeUnit.SECONDS)
+            .readTimeout(40, TimeUnit.SECONDS)
+            .build();
     public static final MediaType MEDIA_TYPE_JPG = MediaType.parse("image/jpg");
     public static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
 
@@ -50,15 +60,21 @@ public class OkHttpUtil {
                         .build();
                 //设置为自己的ip地址
                 Request request = new Request.Builder()
-                        .url("http://10.0.2.2:5000/img/upload")
+                        .url("http://159.75.80.210/img/upload")
                         .post(requestBody)
                         .build();
-                try (Response response = client.newCall(request).execute()) {
-                    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-                    Log.i(OkHttpUtil.class.getSimpleName(), response.body().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Call call = client.newCall(request);
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        Log.e(OkHttpUtil.class.getName(),e.getMessage());
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        Log.i(OkHttpUtil.class.getSimpleName(), response.body().string());
+                    }
+                });
             }
         }.start();
     }
